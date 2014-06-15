@@ -1,4 +1,4 @@
-package de.berlin.dojo;
+package berlin.clock;
 
 public class BerlinClock {
 

@@ -1,9 +1,11 @@
-package de.berlin.dojo;
+package berlin.clock;
 
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Before;
 import org.junit.Test;
+
+import berlin.clock.BerlinClock;
 
 public class BerlinClockTest {
 
