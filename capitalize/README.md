@@ -3,7 +3,7 @@ Capitalize First Letters
 
 Java Code Kata
 
-By Katharina Laube and <hidden>
+By Katharina Laube and ?
 
 Written after the Coding Dojo: 
 https://www.xing.com/events/coding-dojo-juli-capitalizefirstletters-1275165
