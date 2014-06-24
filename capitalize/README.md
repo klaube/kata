@@ -1,7 +1,7 @@
-BerlinClock
-===============
+Capitalize First Letters
+========================
 
-Code Kata Capitalize First Letters (Java)
+Java Code Kata
 
 By Katharina Laube and <hidden>
 
