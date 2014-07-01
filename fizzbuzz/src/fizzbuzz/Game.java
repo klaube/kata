@@ -1,26 +1,39 @@
 package fizzbuzz;
 
+import java.util.Arrays;
+import java.util.List;
+
 public class Game {
 
 	private static final String BUZZ = "buzz";
 	private static final String FIZZ = "fizz";
+	
+	static String calculateAnwser(final Integer input) {
+		return getAllAnswers(input).get(input % 15);
+	}
 
-	static String anwser(final Integer input) {
+	private static List<String> getAllAnswers(final Integer input) {
 		
-		String anwser = "";
+		final String simpleAnswer = input.toString();
 		
-		if(input % 3 == 0) {
-			anwser += FIZZ;
-		}
-		
-		if(input % 5 == 0) {
-			anwser += BUZZ;
-		}
-		
-		if (anwser.isEmpty()) {
-			anwser = input.toString();
-		}
-		
-		return anwser;
+		final List<String> answers = Arrays.asList(
+				FIZZ+BUZZ, 
+				simpleAnswer, 
+				simpleAnswer,
+				FIZZ, 
+				simpleAnswer,
+				BUZZ, 
+				FIZZ, 
+				simpleAnswer,
+				simpleAnswer,
+				FIZZ, 
+				BUZZ, 
+				simpleAnswer,
+				FIZZ, 
+				simpleAnswer,
+				simpleAnswer,
+				simpleAnswer
+				);
+		return answers;
 	}
 }
