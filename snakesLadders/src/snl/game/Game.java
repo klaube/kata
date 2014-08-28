@@ -74,4 +74,21 @@ public class Game {
 		}
 		throw new IllegalArgumentException("Player [" + searchedPlayer + "] is unknown!");
 	}
+
+	void addJumpRule(JumpRule ladder) {
+		Type type = ladder.getType();
+		switch (type) {
+		case LADDER:
+			if (ladder.getStartPosition() >= getFieldSize()) {
+				throw new IllegalArgumentException("Ladder must not start before endposition!");
+			}
+			if (ladder.getStartPosition() < 1) {
+				throw new IllegalArgumentException("Ladder must start at least on startposition!");
+			}
+			break;
+
+		default:
+			break;
+		}
+	}
 }

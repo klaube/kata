@@ -2,6 +2,7 @@ package snl.game;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.Assert.fail;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -50,4 +51,26 @@ public class GameTest {
 		cut.shiftPlayer();
 		assertThat(cut.getCurrentPlayer(), equalTo(secondPlayer));
     }
+
+	@Test
+	public void a_ladder_should_not_start_at_last_field() throws Exception {
+		try {
+			JumpRule ladder = new JumpRule(cut.getFieldSize(), cut.getFieldSize()+1, Type.LADDER);
+			cut.addJumpRule(ladder);
+			fail("Expected Exception!");
+		} catch (IllegalArgumentException e) {
+			// expected
+		}
+	}
+	
+	@Test
+	public void a_ladder_should_not_start_before_first_field() throws Exception {
+		try {
+			JumpRule ladder = new JumpRule(0, 15, Type.LADDER);
+			cut.addJumpRule(ladder);
+			fail("Expected Exception!");
+		} catch (IllegalArgumentException e) {
+			// expected
+		}
+	}
 }
