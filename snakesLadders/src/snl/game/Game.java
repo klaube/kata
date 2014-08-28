@@ -32,11 +32,14 @@ public class Game {
         			+ (getFieldSize()-lastPosition) + "' or lower!");
         	return;
         }
+        System.out.println("The dice you have rolled moves you to " + newPosition);
         
         // use snake or ladder
-		JumpRule specialMove = specialPositions.get(newPosition);
-		if (specialMove != null) {
-			newPosition += specialMove.getEndPosition();
+		JumpRule jumpRule = specialPositions.get(newPosition);
+		if (jumpRule != null) {
+			newPosition += jumpRule.getEndPosition();
+			System.out.println("You have found a " + jumpRule.getType()
+					+ ". It moves you to " + newPosition);
 		}
 		
 		getCurrentPlayer().setPosition(newPosition);
@@ -86,8 +89,10 @@ public class Game {
 				throw new IllegalArgumentException("Ladder must start at least on startposition!");
 			}
 			break;
-
-		default:
+		case SNAKE:
+			if (ladder.getEndPosition() <= getFieldSize()) {
+				throw new IllegalArgumentException("Ladder must not start before endposition!");
+			}
 			break;
 		}
 	}

@@ -16,13 +16,16 @@ public class JumpRule {
         this.type = type;
         
         switch (type) {
+		case SNAKE:
+			if(startPosition <= endPosition) {
+				throw new IllegalArgumentException("Startposition must be greater than endposition!");
+			}
+			break;
+			
 		case LADDER:
 			if(startPosition >= endPosition) {
 				throw new IllegalArgumentException("Startposition must be lower than endposition!");
 			}
-			break;
-
-		default:
 			break;
 		}
     }
@@ -32,7 +35,6 @@ public class JumpRule {
 	}
 
     int getEndPosition() {
-    	System.out.println("You have found a " + type);
         return endPosition;
     }
 

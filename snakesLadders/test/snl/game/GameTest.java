@@ -73,4 +73,26 @@ public class GameTest {
 			// expected
 		}
 	}
+	
+	@Test
+	public void a_snake_should_not_end_before_first_field() throws Exception {
+		try {
+			JumpRule snake = new JumpRule(17, 0, Type.SNAKE);
+			cut.addJumpRule(snake);
+			fail("Expected Exception!");
+		} catch (IllegalArgumentException e) {
+			// expected
+		}
+	}
+	
+	@Test
+	public void a_snake_should_start_before_last_field() throws Exception {
+		try {
+			JumpRule snake = new JumpRule(cut.getFieldSize()+1, cut.getFieldSize(), Type.SNAKE);
+			cut.addJumpRule(snake);
+			fail("Expected Exception!");
+		} catch (IllegalArgumentException e) {
+			// expected
+		}
+	}
 }
