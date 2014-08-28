@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 /**
  * @author Max Schwaab, Katharina Laube
@@ -17,21 +18,31 @@ public class Game {
 
     private int currentPlayer = 0;
 
-    public void initGame() {
-
+    void addPlayer(final Player player) {
+        players.add(player);
     }
 
-    public void moveCurrentPlayer() {
-        final Player currentPlayer = getCurrentPlayer();
+    void moveCurrentPlayer(int diceValue) {
+        final int lastPosition = getCurrentPlayer().getPosition();
 
-        currentPlayer.rollDice();
-
-        final int endPosition = specialPositions.get(currentPlayer.getPosition()).getEndPosition();
-
-        currentPlayer.setPosition(endPosition);
+        // roll dice
+        int newPosition = lastPosition + diceValue;
+        if (newPosition > getFieldSize()) {
+        	System.out.println("You have to roll a '" 
+        			+ (getFieldSize()-lastPosition) + "' or lower!");
+        	return;
+        }
+        
+        // use snake or ladder
+		JumpRule specialMove = specialPositions.get(newPosition);
+		if (specialMove != null) {
+			newPosition += specialMove.getEndPosition();
+		}
+		
+		getCurrentPlayer().setPosition(newPosition);
     }
 
-    public void shiftPlayer() {
+    void shiftPlayer() {
         if(this.currentPlayer == players.size() -1 ) {
             this.currentPlayer = 0;
         } else {
@@ -39,19 +50,28 @@ public class Game {
         }
     }
 
-    private Player getCurrentPlayer() {
+    boolean isOver() {
+        return getCurrentPlayer().getPosition() == getFieldSize();
+    }
+
+    Player getCurrentPlayer() {
         return players.get(currentPlayer);
     }
 
-    public int getSize() {
+    int getDiceValue() {
+        return new Random().nextInt(6) + 1;
+    }
+
+    int getFieldSize() {
         return 100;
     }
 
-    public void addPlayer(final Player player) {
-        players.add(player);
-    }
-
-    public boolean isOver() {
-        return true;
-    }
+	int getPlayersPosition(Player searchedPlayer) {
+		for (Player player : players) {
+			if (player.equals(searchedPlayer)) {
+				return player.getPosition();
+			}
+		}
+		throw new IllegalArgumentException("Player [" + searchedPlayer + "] is unknown!");
+	}
 }

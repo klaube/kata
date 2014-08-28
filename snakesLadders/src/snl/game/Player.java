@@ -1,6 +1,5 @@
 package snl.game;
 
-import java.util.Random;
 
 /**
  * @author Max Schwaab, Katharina Laube
@@ -8,6 +7,10 @@ import java.util.Random;
  */
 public class Player {
     private int position;
+    
+    public Player() {
+    	setPosition(1);
+	}
 
     public void setPosition(final int position) {
         this.position = position;
@@ -17,11 +20,7 @@ public class Player {
         return position;
     }
 
-    public void rollDice() {
-        position += getDiceValue();
-    }
-
-    public int getDiceValue() {
-        return new Random().nextInt(6) + 1;
+    public void rollDice(int diceValue) {
+        position += diceValue;
     }
 }
