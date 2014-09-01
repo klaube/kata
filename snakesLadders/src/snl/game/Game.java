@@ -12,36 +12,59 @@ import java.util.Random;
  */
 public class Game {
 
-    private Map<Integer, JumpRule> specialPositions = new HashMap<>();
+    private Map<Integer, JumpRule> specialPositions;
 
-    private List<Player> players = new ArrayList<>();
+    private List<Player> players;
 
-    private int currentPlayer = 0;
+    private int currentPlayer;
+
+	private int fieldSize;
+	
+	public Game() {
+		System.out.println("\n\nLet's start a new game!");
+		System.out.println("=======================");
+		
+	    specialPositions = new HashMap<>();
+	    players = new ArrayList<>();
+	    currentPlayer = 0;
+	}
 
     void addPlayer(final Player player) {
         players.add(player);
+        System.out.println("Welcome player " + player.getName() +"!");
     }
 
-    void moveCurrentPlayer(int diceValue) {
+    Player getCurrentPlayer() {
+        return players.get(currentPlayer);
+    }
+
+	public void moveCurrentPlayer() {
+		moveCurrentPlayerForTest(getDiceValue());
+	}
+
+    void moveCurrentPlayerForTest(int diceValue) {
+    	
+    	checkFieldSize();
+    	
         final int lastPosition = getCurrentPlayer().getPosition();
         final String playerName = getCurrentPlayer().getName();
 
         // roll dice
         int newPosition = lastPosition + diceValue;
         if (newPosition > getFieldSize()) {
-        	System.out.println("You have to roll a '" 
+        	System.out.println("\nSorry " + playerName + ", you have to roll a '" 
         			+ (getFieldSize()-lastPosition) + "' or lower!");
         	return;
         }
-        System.out.println(playerName + " has rolled '" +  diceValue+ "'. "
-        		+ "This moves him to " + newPosition + ".");
+        System.out.println("\n" + playerName + ", you have rolled '" +  diceValue+ "'. "
+        		+ "This moves you to " + newPosition + ".");
         
         // use snake or ladder
 		JumpRule jumpRule = specialPositions.get(newPosition);
 		if (jumpRule != null) {
 			newPosition = jumpRule.getEndPosition();
-			System.out.println("He has found a " + jumpRule.getType()
-					+ ". It moves him to " + newPosition + ".");
+			System.out.println("You have found a " + jumpRule.getType()
+					+ ". It moves you to " + newPosition + ".");
 		}
 		
 		getCurrentPlayer().setPosition(newPosition);
@@ -59,16 +82,8 @@ public class Game {
         return getCurrentPlayer().getPosition() == getFieldSize();
     }
 
-    Player getCurrentPlayer() {
-        return players.get(currentPlayer);
-    }
-
     int getDiceValue() {
         return new Random().nextInt(6) + 1;
-    }
-
-    int getFieldSize() {
-        return 100;
     }
 
 	int getPlayersPosition(Player searchedPlayer) {
@@ -81,8 +96,13 @@ public class Game {
 	}
 
 	void addJumpRule(JumpRule jumpRule) {
+    	
+		checkFieldSize();
+		checkJumpRule(jumpRule);
 		specialPositions.put(jumpRule.getStartPosition(), jumpRule);
-		
+	}
+
+	private void checkJumpRule(JumpRule jumpRule) {
 		Type type = jumpRule.getType();
 		switch (type) {
 		case LADDER:
@@ -105,5 +125,25 @@ public class Game {
 			}
 			break;
 		}
+	}
+
+    int getFieldSize() {
+    	checkFieldSize();
+        return fieldSize;
+    }
+
+	private void checkFieldSize() {
+		if (fieldSize <= 0) {
+    		throw new IllegalArgumentException("Please initialize the field's size!");
+    	}
+	}
+
+	public void setFieldSize(int fieldSize) {
+        System.out.println("The field's size is " + fieldSize +".");
+		this.fieldSize = fieldSize;
+	}
+
+	public Map<Integer, JumpRule> getSpecialPositions() {
+		return specialPositions;
 	}
 }

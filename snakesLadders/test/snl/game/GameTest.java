@@ -19,6 +19,7 @@ public class GameTest {
     @Before
     public void setUp() throws Exception {
         cut = new Game();
+        cut.setFieldSize(100);
         
         firstPlayer = new Player("1st player");
         cut.addPlayer(firstPlayer);
@@ -37,7 +38,7 @@ public class GameTest {
 
     @Test
     public void move_player_should_changes_players_position() throws Exception {
-    	cut.moveCurrentPlayer(4);
+    	cut.moveCurrentPlayerForTest(4);
     	int endPosition = cut.getPlayersPosition(firstPlayer);
     	assertThat(endPosition, equalTo(5));
     }
@@ -45,7 +46,7 @@ public class GameTest {
     @Test
     public void a_ladder_pushes_player_forward() throws Exception {
     	cut.addJumpRule(new JumpRule(5, 10, Type.LADDER));
-    	cut.moveCurrentPlayer(4);
+    	cut.moveCurrentPlayerForTest(4);
     	int endPosition = cut.getPlayersPosition(firstPlayer);
     	assertThat(endPosition, equalTo(10));
     }
@@ -53,7 +54,7 @@ public class GameTest {
     @Test
     public void a_snake_pushes_player_backward() throws Exception {
     	cut.addJumpRule(new JumpRule(5, 1, Type.SNAKE));
-    	cut.moveCurrentPlayer(4);
+    	cut.moveCurrentPlayerForTest(4);
     	int endPosition = cut.getPlayersPosition(firstPlayer);
     	assertThat(endPosition, equalTo(1));
     }

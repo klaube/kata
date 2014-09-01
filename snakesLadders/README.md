@@ -1,13 +1,13 @@
 ###Snakes & Ladders
 
-Java Code Kata "Snakes & Ladders"
-
-By Max Schwaab und Katharina Laube
+Java Code Kata by Max Schwaab und Katharina Laube
 
 Written during and finished after the [Agile Developer Coding Dojo @ E-Post] 
 (http://www.meetup.com/Agile-Developers-Berlin/events/200524592/)
 
-Runs with *JUnit 4.11* and *hamcrest 1.3* as testing framework.
+Runs with *JUnit 4.11* and *hamcrest 1.3* as testing framework and uses *google guava 13.0.1* for file parsing.
+
+Run *GameRunnerTest.runFullGameFromFile()* to see a whole game with three players.
 
 **Rules**
 
@@ -18,7 +18,7 @@ Runs with *JUnit 4.11* and *hamcrest 1.3* as testing framework.
 * A game has a defined field size 
 * Player must hit the last field directly to win the game
 
-**Advanced rules**
+**Advanced rules (not yet supported)**
 
 * Player starts only with 3
 * You have one more throw on 6
