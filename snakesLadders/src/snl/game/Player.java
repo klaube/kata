@@ -7,9 +7,11 @@ package snl.game;
  */
 public class Player {
     private int position;
+	private String name;
     
-    public Player() {
-    	setPosition(1);
+    public Player(String name) {
+    	this.name = name;
+		setPosition(1);
 	}
 
     public void setPosition(final int position) {
@@ -23,4 +25,8 @@ public class Player {
     public void rollDice(int diceValue) {
         position += diceValue;
     }
+
+	public String getName() {
+		return name;
+	}
 }

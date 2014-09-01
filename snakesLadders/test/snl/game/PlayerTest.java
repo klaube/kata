@@ -16,7 +16,7 @@ public class PlayerTest {
 
     @Before
     public void setUp() throws Exception {
-        cut = new Player();
+        cut = new Player("1st player");
     }
     
     @Test

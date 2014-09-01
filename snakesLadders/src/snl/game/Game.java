@@ -24,6 +24,7 @@ public class Game {
 
     void moveCurrentPlayer(int diceValue) {
         final int lastPosition = getCurrentPlayer().getPosition();
+        final String playerName = getCurrentPlayer().getName();
 
         // roll dice
         int newPosition = lastPosition + diceValue;
@@ -32,14 +33,15 @@ public class Game {
         			+ (getFieldSize()-lastPosition) + "' or lower!");
         	return;
         }
-        System.out.println("The dice you have rolled moves you to " + newPosition);
+        System.out.println(playerName + " has rolled '" +  diceValue+ "'. "
+        		+ "This moves him to " + newPosition + ".");
         
         // use snake or ladder
 		JumpRule jumpRule = specialPositions.get(newPosition);
 		if (jumpRule != null) {
-			newPosition += jumpRule.getEndPosition();
-			System.out.println("You have found a " + jumpRule.getType()
-					+ ". It moves you to " + newPosition);
+			newPosition = jumpRule.getEndPosition();
+			System.out.println("He has found a " + jumpRule.getType()
+					+ ". It moves him to " + newPosition + ".");
 		}
 		
 		getCurrentPlayer().setPosition(newPosition);
@@ -78,20 +80,28 @@ public class Game {
 		throw new IllegalArgumentException("Player [" + searchedPlayer + "] is unknown!");
 	}
 
-	void addJumpRule(JumpRule ladder) {
-		Type type = ladder.getType();
+	void addJumpRule(JumpRule jumpRule) {
+		specialPositions.put(jumpRule.getStartPosition(), jumpRule);
+		
+		Type type = jumpRule.getType();
 		switch (type) {
 		case LADDER:
-			if (ladder.getStartPosition() >= getFieldSize()) {
-				throw new IllegalArgumentException("Ladder must not start before endposition!");
+			if (jumpRule.getStartPosition() >= getFieldSize()) {
+				throw new IllegalArgumentException(type + " must not start before field's end!");
 			}
-			if (ladder.getStartPosition() < 1) {
-				throw new IllegalArgumentException("Ladder must start at least on startposition!");
+			if (jumpRule.getStartPosition() < 1) {
+				throw new IllegalArgumentException(type + " must start at least on field's start!");
 			}
 			break;
 		case SNAKE:
-			if (ladder.getEndPosition() <= getFieldSize()) {
-				throw new IllegalArgumentException("Ladder must not start before endposition!");
+			if (jumpRule.getStartPosition() < 2) {
+				throw new IllegalArgumentException(type + " must start after field's start!");
+			}
+			if (jumpRule.getStartPosition() >= getFieldSize()) {
+				throw new IllegalArgumentException(type + " must start before field's end!");
+			}
+			if (jumpRule.getEndPosition() < 1) {
+				throw new IllegalArgumentException(type + " must not end before field's start!");
 			}
 			break;
 		}

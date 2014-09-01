@@ -20,7 +20,7 @@ public class GameTest {
     public void setUp() throws Exception {
         cut = new Game();
         
-        firstPlayer = new Player();
+        firstPlayer = new Player("1st player");
         cut.addPlayer(firstPlayer);
     }
 
@@ -36,15 +36,31 @@ public class GameTest {
     }
 
     @Test
-    public void move_player_should_change_players_position() throws Exception {
+    public void move_player_should_changes_players_position() throws Exception {
     	cut.moveCurrentPlayer(4);
     	int endPosition = cut.getPlayersPosition(firstPlayer);
     	assertThat(endPosition, equalTo(5));
     }
+    
+    @Test
+    public void a_ladder_pushes_player_forward() throws Exception {
+    	cut.addJumpRule(new JumpRule(5, 10, Type.LADDER));
+    	cut.moveCurrentPlayer(4);
+    	int endPosition = cut.getPlayersPosition(firstPlayer);
+    	assertThat(endPosition, equalTo(10));
+    }
+    
+    @Test
+    public void a_snake_pushes_player_backward() throws Exception {
+    	cut.addJumpRule(new JumpRule(5, 1, Type.SNAKE));
+    	cut.moveCurrentPlayer(4);
+    	int endPosition = cut.getPlayersPosition(firstPlayer);
+    	assertThat(endPosition, equalTo(1));
+    }
 
     @Test
     public void shift_player_should_change_Player() throws Exception {
-        Player secondPlayer = new Player();
+        Player secondPlayer = new Player("2nd player");
 		cut.addPlayer(secondPlayer);
 		assertThat(cut.getCurrentPlayer(), equalTo(firstPlayer));
 		
