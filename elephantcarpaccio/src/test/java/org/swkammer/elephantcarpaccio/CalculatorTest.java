@@ -1,15 +1,14 @@
 package org.swkammer.elephantcarpaccio;
 
+import java.math.BigDecimal;
+
 import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;
 
 import org.hamcrest.CoreMatchers;
 import org.junit.Assert;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
-import java.math.BigDecimal;
 
 /**
  * @author Armin H., Katharina L.
@@ -27,28 +26,31 @@ public class CalculatorTest {
             "1, 1.26, IS",
             "1, 1.08, CH"
     })
-    public void testOneItemForOneEuroInDeCosts119(int itemNumber, String totalPrice, String countryCode) {
-        final Calculator calculator = new Calculator(itemNumber, "1.00", countryCode);
-        Assert.assertThat(calculator.getTaxResult(), CoreMatchers.is(new BigDecimal(totalPrice)));
+    public void givenCountryAndAmountWhenNoDiscountShouldReturnPriceWithTax(int amount, String totalPrice, String countryCode) {
+        final Calculator calculator = new Calculator(amount, "1.00", countryCode);
+        Assert.assertThat(calculator.getTotalPrice(), CoreMatchers.is(new BigDecimal(totalPrice)));
     }
 
     @Test
     @Parameters({
-            "1000, 970.00",
-            "2000, 1940.00"
+            "1001, 970.97",
+            "5001, 4750.95",
+            "7001, 6510.93",
+            "10001, 9000.90",
+            "50001, 42500.85",
     })
-    public void testOneItemFor1000EuroInDeCosts(int itemNumber, String totalPrice) {
-        final Calculator calculator = new Calculator(itemNumber, "1.00", "DE");
+    public void givenPriceBetween1000And4999ShouldDiscount3Percentage(int amount, String totalPrice) {
+        final Calculator calculator = new Calculator(amount, "1.00", "DE");
         Assert.assertThat(calculator.getDiscountResult(), CoreMatchers.is(new BigDecimal(totalPrice)));
     }
 
-    @Ignore
     @Test
     @Parameters({
-            "1000, 970.00"
+            "1, 1001.00, 1155.45",
+            "1001, 1, 1155.45"
     })
-    public void testOneItemFor1000EuroInDeCost(int itemNumber, String totalPrice) {
-        final Calculator calculator = new Calculator(itemNumber, "1.00", "DE");
+    public void givenPriceAmountAndCountryShouldReturnTotalPrice(int amount, String singlePrice, String totalPrice) {
+        final Calculator calculator = new Calculator(amount, singlePrice, "DE");
         Assert.assertThat(calculator.getTotalPrice(), CoreMatchers.is(new BigDecimal(totalPrice)));
     }
 }

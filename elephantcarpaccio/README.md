@@ -7,6 +7,19 @@ Written during and finished after the [Softwerkskammer Meeting @ leanovate]
 
 Runs with *JUnit 4.11*, *hamcrest 1.3* and *JUnitParams 1.0.3* as testing framework.
 
+**Product**
+
+Accept 3 inputs from the user:
+- How many items
+- Price per item
+- 2-letter state code
+
+Output the total price. Give a discount based on the total price, add state tax based on the state and the discount price.
+
+Order value --> discount rate: 1000 € --> 3% | 5000 € --> 5% | 7000 € --> 7% | 10000 € --> 10% | 50000 € --> 15%
+
+State --> Tax rate: DE --> 19 % | DK --> 25% | HR --> 25% | IS --> 25,5% | CH --> 8%
+
 Run *CaculatorTest* to see our user stories.
 
 **Motivation**

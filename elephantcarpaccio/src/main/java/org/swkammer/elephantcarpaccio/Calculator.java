@@ -29,17 +29,30 @@ public class Calculator {
         this.countryCode = countryCode;
     }
 
-    public BigDecimal getTaxResult() {
-        return TAX.get(countryCode).multiply(amount).multiply(price).setScale(2, BigDecimal.ROUND_HALF_UP);
-    }
     public BigDecimal getTaxResult(BigDecimal priceBeforeTax) {
-        return TAX.get(countryCode).multiply(amount).multiply(priceBeforeTax).setScale(2, BigDecimal.ROUND_HALF_UP);
+        return TAX.get(countryCode).multiply(priceBeforeTax).setScale(2, BigDecimal.ROUND_HALF_UP);
     }
 
     public BigDecimal getDiscountResult() {
-        final BigDecimal discount = BigDecimal.ONE.subtract(new BigDecimal("0.03"));
-        BigDecimal result = price.multiply(discount).multiply(amount);
-        return result.setScale(2, RoundingMode.HALF_UP);
+        double discount = 1.0;
+        final BigDecimal orderValue = price.multiply(amount);
+		double orderValueDouble = orderValue.doubleValue();
+		if (orderValueDouble > 50000) {
+        	discount -= 0.15;
+        } 
+        else if (orderValueDouble > 10000) {
+        	discount -= 0.10;        	
+        } 
+        else if (orderValueDouble > 7000) {
+        	discount -= 0.07;        	
+        } 
+        else if (orderValueDouble > 5000) {
+        	discount -= 0.05;        	
+        } 
+        else if (orderValueDouble > 1000) {
+        	discount -= 0.03;        	
+        }
+		return orderValue.multiply(new BigDecimal(discount)).setScale(2, RoundingMode.HALF_UP);
     }
 
     public BigDecimal getTotalPrice() {
