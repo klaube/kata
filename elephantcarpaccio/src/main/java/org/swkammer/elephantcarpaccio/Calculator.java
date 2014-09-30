@@ -34,25 +34,26 @@ public class Calculator {
     }
 
     public BigDecimal getDiscountResult() {
-        double discount = 1.0;
         final BigDecimal orderValue = price.multiply(amount);
-		double orderValueDouble = orderValue.doubleValue();
+		final double orderValueDouble = orderValue.doubleValue();
+		
+		BigDecimal discount = new BigDecimal("1.00");
 		if (orderValueDouble > 50000) {
-        	discount -= 0.15;
+        	discount = discount.subtract(new BigDecimal("0.15"));
         } 
         else if (orderValueDouble > 10000) {
-        	discount -= 0.10;        	
+        	discount = discount.subtract(new BigDecimal("0.10"));  	
         } 
         else if (orderValueDouble > 7000) {
-        	discount -= 0.07;        	
+        	discount = discount.subtract(new BigDecimal("0.07"));     	
         } 
         else if (orderValueDouble > 5000) {
-        	discount -= 0.05;        	
+        	discount = discount.subtract(new BigDecimal("0.05"));     	
         } 
         else if (orderValueDouble > 1000) {
-        	discount -= 0.03;        	
+        	discount = discount.subtract(new BigDecimal("0.03"));     	
         }
-		return orderValue.multiply(new BigDecimal(discount)).setScale(2, RoundingMode.HALF_UP);
+		return orderValue.multiply(discount).setScale(2, RoundingMode.HALF_UP);
     }
 
     public BigDecimal getTotalPrice() {
