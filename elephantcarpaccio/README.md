@@ -7,7 +7,7 @@ Written during and finished after the [Softwerkskammer Meeting @ leanovate]
 
 Runs with *JUnit 4.11*, *hamcrest 1.3* and *JUnitParams 1.0.3* as testing framework.
 
-**Product**
+**Business Requirements**
 
 Accept 3 inputs from the user:
 - How many items
@@ -22,7 +22,7 @@ State --> Tax rate: DE --> 19 % | DK --> 25% | HR --> 25% | IS --> 25,5% | CH --
 
 Run *CaculatorTest* to see our user stories.
 
-**Motivation**
+**Motivation of Elephant Crpaccio**
 
 Most programmers say they dodn’t know how to slice feature requests to the hour level. In contrast, top programmers easily take them to 15-30 minute programming episodes. What does it take for people to make the transition?
 

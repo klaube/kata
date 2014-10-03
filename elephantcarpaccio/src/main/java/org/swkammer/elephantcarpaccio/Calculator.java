@@ -6,11 +6,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
+ * This class calculates the total price with discount and tax,
+ * when the amount of items, single price and country code is given.
+ * 
  * @author Armin H., Katharina L.
  */
 public class Calculator {
-    private static final Map<String, BigDecimal> TAX = new HashMap<String, BigDecimal>();
 
+	private static final Map<String, BigDecimal> TAX = new HashMap<String, BigDecimal>();
     static {
         TAX.put("DE", new BigDecimal("1.19"));
         TAX.put("DK", new BigDecimal("1.25"));
@@ -29,11 +32,15 @@ public class Calculator {
         this.countryCode = countryCode;
     }
 
-    public BigDecimal getTaxResult(BigDecimal priceBeforeTax) {
+    public BigDecimal getTotalPrice() {
+        return getTaxResult(getDiscountResult());
+    }
+
+    BigDecimal getTaxResult(BigDecimal priceBeforeTax) {
         return TAX.get(countryCode).multiply(priceBeforeTax).setScale(2, BigDecimal.ROUND_HALF_UP);
     }
 
-    public BigDecimal getDiscountResult() {
+    BigDecimal getDiscountResult() {
         final BigDecimal orderValue = price.multiply(amount);
 		final double orderValueDouble = orderValue.doubleValue();
 		
@@ -54,9 +61,5 @@ public class Calculator {
         	discount = discount.subtract(new BigDecimal("0.03"));     	
         }
 		return orderValue.multiply(discount).setScale(2, RoundingMode.HALF_UP);
-    }
-
-    public BigDecimal getTotalPrice() {
-        return getTaxResult(getDiscountResult());
     }
 }

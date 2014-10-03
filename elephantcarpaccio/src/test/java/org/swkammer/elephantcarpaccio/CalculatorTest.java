@@ -11,6 +11,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 /**
+ * Each test represents one slice where one test is one call with different test parameters.
+ * 
  * @author Armin H., Katharina L.
  */
 @RunWith(JUnitParamsRunner.class)
@@ -18,17 +20,17 @@ public class CalculatorTest {
 
     @Test
     @Parameters({
-            "1, 1.19, DE",
-            "3, 3.57, DE",
-            "1, 1.25, DK",
-            "3, 3.75, DK",
-            "1, 1.25, HR",
-            "1, 1.26, IS",
-            "1, 1.08, CH"
+            "1, DE, 1.19",
+            "3, DE, 3.57",
+            "1, DK, 1.25",
+            "3, DK, 3.75",
+            "1, HR, 1.25",
+            "1, IS, 1.26",
+            "1, CH, 1.08"
     })
-    public void givenCountryAndAmountWhenNoDiscountShouldReturnPriceWithTax(int amount, String totalPrice, String countryCode) {
-        final Calculator calculator = new Calculator(amount, "1.00", countryCode);
-        Assert.assertThat(calculator.getTotalPrice(), CoreMatchers.is(new BigDecimal(totalPrice)));
+    public void givenCountryAndPriceWhenNoDiscountShouldReturnPriceWithTax(String price, String countryCode, String priceWithTax) {
+        final Calculator calculator = new Calculator(1, price, countryCode);
+        Assert.assertThat(calculator.getTotalPrice(), CoreMatchers.is(new BigDecimal(priceWithTax)));
     }
 
     @Test
@@ -39,9 +41,9 @@ public class CalculatorTest {
             "10001, 9000.90",
             "50001, 42500.85",
     })
-    public void givenPriceBetween1000And4999ShouldDiscount3Percentage(int amount, String totalPrice) {
-        final Calculator calculator = new Calculator(amount, "1.00", "DE");
-        Assert.assertThat(calculator.getDiscountResult(), CoreMatchers.is(new BigDecimal(totalPrice)));
+    public void givenPriceAbove1000ShouldLeadToDiscount(String price, String priceWithDiscount) {
+        final Calculator calculator = new Calculator(1, price, "DE");
+        Assert.assertThat(calculator.getDiscountResult(), CoreMatchers.is(new BigDecimal(priceWithDiscount)));
     }
 
     @Test
