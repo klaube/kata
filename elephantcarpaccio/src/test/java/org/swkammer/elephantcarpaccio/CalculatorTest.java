@@ -39,7 +39,7 @@ public class CalculatorTest {
             "5001, 4750.95",
             "7001, 6510.93",
             "10001, 9000.90",
-            "50001, 42500.85",
+            "50001, 42500.85"
     })
     public void givenPriceAbove1000ShouldLeadToDiscount(String price, String priceWithDiscount) {
         final Calculator calculator = new Calculator(1, price, "DE");
