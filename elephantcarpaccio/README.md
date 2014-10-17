@@ -22,7 +22,7 @@ State --> Tax rate: DE --> 19 % | DK --> 25% | HR --> 25% | IS --> 25,5% | CH --
 
 Run *CaculatorTest* to see our user stories.
 
-**Motivation of Elephant Crpaccio**
+**Motivation of Elephant Carpaccio**
 
 Most programmers say they dodn’t know how to slice feature requests to the hour level. In contrast, top programmers easily take them to 15-30 minute programming episodes. What does it take for people to make the transition?
 
