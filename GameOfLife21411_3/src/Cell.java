@@ -12,6 +12,10 @@ public class Cell {
 		if (count == 0) {
 			alive = false;
 			return;
+		} 
+		if(count > 3) {
+			alive = false;
+			return;
 		}
 		alive = true;
 	}
