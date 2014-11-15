@@ -2,23 +2,26 @@
 public class Cell {
 
 	boolean alive = true;
+	private int count;
 	
 	public boolean isAlive() {
 		return alive;
 	}
 
 	public void tick() {
-		alive = false;
+		if (count == 0) {
+			alive = false;
+			return;
+		}
+		alive = true;
 	}
 
-	public void setAlive(boolean b) {
-		// TODO Auto-generated method stub
-		
+	public void setAlive(boolean alive) {
+		this.alive = alive;
 	}
 
 	public void addNeighbour(Cell n1) {
-		// TODO Auto-generated method stub
-		
+		count++;
 	}
 
 }
