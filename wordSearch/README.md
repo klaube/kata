@@ -13,3 +13,5 @@ This time is the goal to find the right words in a bunch of letters. “Wordpuzzle
 
 If someone is interested to play the game before, please have a look into Google Play Store. Apple should also have a game like this:
 [WordSearch App] (https://play.google.com/store/apps/details?id=com.melimots.WordSearch&hl=en)
+
+The index of the matrix in count from the upper left corner with 0 and ends in the lower right corner with x*y-1. The position of start and end within the matrix should be provided when the word was found to highlight the letters.
