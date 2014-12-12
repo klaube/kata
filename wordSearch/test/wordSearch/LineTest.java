@@ -1,27 +1,30 @@
 package wordSearch;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
-import org.junit.Before;
 import org.junit.Test;
 
 public class LineTest {
 
-	private Line horizontalRow;
-
-	@Before
-	public void setUp() throws Exception {
-		horizontalRow = new Line("XXXXWORDXX");
-	}
+	private Line cut;
 
 	@Test
 	public void a_contained_word_should_be_found() {
-		assertTrue(horizontalRow.contains("WORD"));
+		cut = new Line("XXXXWORDXX", 0, Orientation.HORIZONTAL);
+		assertEquals(4, cut.getStartOfWord("WORD"));
 	}
 	
 	@Test
 	public void a_missing_should_not_be_found() {
-		assertFalse(horizontalRow.contains("TEST"));
+		cut = new Line("XXXXWORDXX", 0, Orientation.HORIZONTAL);
+		assertEquals(-1, cut.getStartOfWord("TEST"));
+	}
+	
+	@Test
+	public void letterShouldbeAdded() throws Exception {
+		cut = new Line("XXXXWORDXX", 0, Orientation.HORIZONTAL);
+		cut.add("A");
+		assertEquals("XXXXWORDXXA", cut.getRow());
 	}
 
 }
