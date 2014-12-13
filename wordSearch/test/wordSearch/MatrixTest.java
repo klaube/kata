@@ -1,5 +1,11 @@
 package wordSearch;
 
+/**
+ * Tests the search for a word within the matrix.
+ *
+ * @author Till Friebe, Katharina Laube
+ * @since 12.12.2014
+ */
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 

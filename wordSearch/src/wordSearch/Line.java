@@ -1,5 +1,11 @@
 package wordSearch;
 
+/**
+ * A line within the matrix with the given orientation..
+ *
+ * @author Till Friebe, Katharina Laube
+ * @since 12.12.2014
+ */
 public class Line {
 
 	private String sentence;
@@ -8,9 +14,7 @@ public class Line {
 	private int horizontalLength;
 
 	public Line(String sentence, int startPosition, Orientation orientation) {
-		this.sentence = sentence;
-		this.startOfLineWithinMatrix = startPosition;
-		this.orientation = orientation;
+		this(sentence, startPosition, orientation, -1);
 	}
 
 	public Line(String sentence, int startPosition, Orientation orientation, int horizontalLength) {
@@ -20,30 +24,26 @@ public class Line {
 		this.horizontalLength = horizontalLength;
 	}
 	
-	int getStartOfWord(String word) {
+	int getStartOfWordWithinSentence(String word) {
 		return sentence.indexOf(word);
-	}
-
-	int getStartWithinMatrix() {
-		return startOfLineWithinMatrix;
 	}
 
 	void add(String currentLetter) {
 		sentence += currentLetter;
 	}
 
-	public Position getPosition(String word, int positionInRow) {
+	public Position getPositionWithinMatrix(String word, int positionInRow) {
 		int startOfWordInMatrix = positionInRow + startOfLineWithinMatrix;
-		int endInMatrix = getEndInMatrix(word, startOfWordInMatrix);
+		int endInMatrix = getEndWithinMatrix(word, startOfWordInMatrix);
 		return new Position(startOfWordInMatrix, endInMatrix);
 	}
 
-	int getEndInMatrix(String word, int startOfWordInMatrix) {
+	private int getEndWithinMatrix(String word, int startOfWordInMatrix) {
 		switch (orientation) {
 		case HORIZONTAL: return startOfWordInMatrix + word.length() - 1;
 		case VERTICAL: return startOfWordInMatrix + ((word.length() - 1) * horizontalLength);
-		default: return -1;
-		}
+		default: throw new IllegalArgumentException("Orientation "+ orientation + " is not yet supported!");
+		} 
 	}
 	
 	String getRow() {

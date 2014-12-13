@@ -3,6 +3,12 @@ package wordSearch;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The field with all letters including the words to search.
+ *
+ * @author Till Friebe, Katharina Laube
+ * @since 12.12.2014
+ */
 public class Matrix {
 
 	private List<Line> rows = new ArrayList<>();
@@ -45,17 +51,17 @@ public class Matrix {
 		
 		// horizontals
 		for (Line horizontal : rows) {
-			int positionInRow = horizontal.getStartOfWord(word);
+			int positionInRow = horizontal.getStartOfWordWithinSentence(word);
 			if(positionInRow > -1) {
-				return horizontal.getPosition(word, positionInRow);
+				return horizontal.getPositionWithinMatrix(word, positionInRow);
 			}
 		}
 		
 		//verticals
 		for (Line vertical : columns) {
-			int positionInColumn = vertical.getStartOfWord(word);
+			int positionInColumn = vertical.getStartOfWordWithinSentence(word);
 			if(positionInColumn > -1) {
-				return vertical.getPosition(word, positionInColumn);
+				return vertical.getPositionWithinMatrix(word, positionInColumn);
 			}
 		}
 		
