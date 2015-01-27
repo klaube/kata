@@ -16,18 +16,18 @@ public enum RomanLimit {
 	M("M", 1000, true);
 	
 	private String roman;
-	private Integer latin;
+	private Integer arabic;
 	private boolean isCounter;
 
-	private RomanLimit(String roman, Integer latin, boolean isCounter) {
+	private RomanLimit(String roman, Integer arabic, boolean isCounter) {
 		this.roman = roman;
-		this.latin = latin;
+		this.arabic = arabic;
 		this.isCounter = isCounter;
 	}
 	
-	String fromLatin(Integer latin){
+	String fromArabic(Integer arabic){
 		for (RomanLimit limit : RomanLimit.values()) {
-			if(limit.getLatin().equals(latin)){
+			if(limit.getArabic().equals(arabic)){
 				return limit.getRoman();
 			}
 		}
@@ -38,8 +38,8 @@ public enum RomanLimit {
 		return roman;
 	}
 
-	Integer getLatin() {
-		return latin;
+	Integer getArabic() {
+		return arabic;
 	}
 	
 	boolean isCounter() {
