@@ -3,7 +3,6 @@ import static org.junit.Assert.assertThat;
 import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;
 
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -24,25 +23,7 @@ public class ConverterTest {
     	"7, VII",
     	"8, VIII",
     	"9, IX"})
-    public void testConvertToRoman(Integer arabic, String expectedRoman) {
-        String output = Converter.convertToRoman(arabic);
-        assertThat(output, equalTo(expectedRoman));
-    }
-
-    @Ignore
-    @Test
-    @Parameters({
-    	"11, XI", 
-    	"12, XII", 
-    	"13, XIII", 
-    	"14, XIV", 
-    	"15, XV", 
-    	"16, XVI", 
-    	"17, XVII",
-    	"18, XVIII",
-    	"19, XIX",
-    	"20, XX"})
-    public void testConvertToRomanFirstDecade(Integer arabic, String expectedRoman) {
+    public void testConvertToRomanOneToNine(Integer arabic, String expectedRoman) {
         String output = Converter.convertToRoman(arabic);
         assertThat(output, equalTo(expectedRoman));
     }
@@ -58,7 +39,44 @@ public class ConverterTest {
     	"3000, MMM"
     	})
     public void testConvertToRomanSimpleRepeats(Integer arabic, String expectedRoman) {
-        String output = Converter.getSimpleRepeat(arabic, "");
+        String output = Converter.convertToRoman(arabic);
         assertThat(output, equalTo(expectedRoman));
+    }
+
+    @Test
+    @Parameters({
+    	"11, XI",
+    	"12, XII",
+    	"13, XIII",
+    	"14, XIV", 
+    	"15, XV", 
+    	"16, XVI", 
+    	"17, XVII",
+    	"18, XVIII",
+    	"19, XIX"})
+    public void testConvertToRomanSecondDecade(Integer arabic, String expectedRoman) {
+        String output = Converter.convertToRoman(arabic);
+        assertThat(output, equalTo(expectedRoman));
+    }
+
+    @Test
+    @Parameters({
+    	"1990, MCMXC",
+    	"2008, MMVIII",
+    	"99, XCIX",
+    	"47, XLVII"})
+    public void testConvertToRomanDifficult(Integer arabic, String expectedRoman) {
+        String output = Converter.convertToRoman(arabic);
+        assertThat(output, equalTo(expectedRoman));
+    }
+
+    @Test(expected=IllegalArgumentException.class)
+    public void negative_arabic_numerals_should_not_be_supported() {
+        Converter.convertToRoman(-1);
+    }
+
+    @Test(expected=IllegalArgumentException.class)
+    public void bigger_arabic_numerals_should_not_be_supported() {
+        Converter.convertToRoman(4000);
     }
 }

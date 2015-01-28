@@ -9,22 +9,21 @@ import java.util.List;
  */
 public enum RomanLimit {
 
-	I("I", 1, true),
-	V("V", 5, false),
-	X("X", 10, true),
-	L("L", 50, false),
-	C("C", 100, true),
-	D("D", 500, false),
-	M("M", 1000, true);
+	I("I", 1),
+	V("V", 5),
+	X("X", 10),
+	L("L", 50),
+	C("C", 100),
+	D("D", 500),
+	M("M", 1000), 
+	UNKNOWN("UNKNOWN",-1);
 	
 	private String roman;
 	private Integer arabic;
-	private boolean isCounter;
 
-	private RomanLimit(String roman, Integer arabic, boolean isCounter) {
+	private RomanLimit(String roman, Integer arabic) {
 		this.roman = roman;
 		this.arabic = arabic;
-		this.isCounter = isCounter;
 	}
 	
 	static String fromArabic(Integer arabic){
@@ -37,11 +36,11 @@ public enum RomanLimit {
 	}
 	
 	static List<RomanLimit> getCounters(){
-		return Arrays.asList(M, C, X, I);
+		return Arrays.asList(I, X, C, M, UNKNOWN);
 	}
 	
 	static List<RomanLimit> getHalfs(){
-		return Arrays.asList(D, L, V);
+		return Arrays.asList(V, L, D, UNKNOWN);
 	}
 
 	String getRoman() {
@@ -50,9 +49,5 @@ public enum RomanLimit {
 
 	Integer getArabic() {
 		return arabic;
-	}
-	
-	boolean isCounter() {
-		return isCounter;
 	}
 }

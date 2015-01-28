@@ -8,9 +8,20 @@ public class Converter {
 
 	public static String convertToRoman(final Integer arabic) {
 		
+		if (arabic <= 0 || arabic > 3899){
+			throw new IllegalArgumentException("Roman numerals can only be mapped from 1 to 3899!");
+		}
+		
 		String completeRoman = "";
 		
-		completeRoman = getOnes(arabic, completeRoman, 0);
+		// interate the digit of the arabic numeral beginning with the last digit
+		char[] arabicString = arabic.toString().toCharArray();
+		for (int i = arabicString.length - 1, j=0; i >= 0 ; i--, j++) {
+			
+			char c = arabicString[i];
+			Integer arabicDigit = Character.getNumericValue(c);
+			completeRoman = getRomanLetter(arabicDigit, j) + completeRoman;
+		}
 		
 		return completeRoman;
 	}
@@ -28,45 +39,42 @@ public class Converter {
 		return completeRoman;
 	}
 
-	private static String getOnes(final Integer arabic, String completeRoman, int i) {
-		final RomanLimit currentLimit = RomanLimit.values()[i]; 
-		final Integer currentArabic = currentLimit.getArabic();
+	private static String getRomanLetter(final Integer arabicDigit, int i) {
+		final RomanLimit currentCounterLimit = RomanLimit.getCounters().get(i); 
 		
-		final RomanLimit nextLimit = RomanLimit.values()[i+1];  
-		final Integer nextArabic = nextLimit.getArabic();
+		final RomanLimit nextHalf = RomanLimit.getHalfs().get(i);  
+		final Integer nextHalfArabic = nextHalf.getArabic();
 		
-		final RomanLimit afterNextLimit = RomanLimit.values()[i+2]; 
-		final Integer afterNextArabic = afterNextLimit.getArabic();
+		final RomanLimit nextCounterLimit = RomanLimit.getCounters().get(i+1); 
 		
 		String prefix = "";
 		String middle = "";
 		String suffix = "";
 		
-		if (currentArabic == arabic){
-			return currentLimit.getRoman();
+		if (1 == arabicDigit){
+			return currentCounterLimit.getRoman();
 		}
 		
-		if ( currentArabic < arabic && arabic < nextArabic - 1){
-			suffix = repeat(arabic, currentLimit);
+		if ( 1 < arabicDigit && arabicDigit <= 3){
+			suffix = repeat(arabicDigit, currentCounterLimit);
 		}
-		else if (arabic == nextArabic - 1){
-			prefix = currentLimit.getRoman();
-			middle = nextLimit.getRoman(); 
+		else if (arabicDigit == 4){
+			prefix = currentCounterLimit.getRoman();
+			middle = nextHalf.getRoman(); 
 		}
-		else if (arabic == nextArabic){
-			middle = nextLimit.getRoman();
+		else if (arabicDigit == 5){
+			middle = nextHalf.getRoman();
 		} 
-		else if (nextArabic < arabic && arabic < afterNextArabic - 1){
-			middle = nextLimit.getRoman(); 
-			suffix = repeat(arabic-nextArabic, currentLimit);				
+		else if (5 < arabicDigit && arabicDigit < 9){
+			middle = nextHalf.getRoman(); 
+			suffix = repeat(arabicDigit-nextHalfArabic, currentCounterLimit);				
 		}
-		else if (arabic == afterNextArabic - 1){ 
-			prefix = currentLimit.getRoman();
-			middle = afterNextLimit.getRoman();
+		else if (arabicDigit == 9){ 
+			prefix = currentCounterLimit.getRoman();
+			middle = nextCounterLimit.getRoman();
 		}
 		
-		completeRoman += prefix + middle + suffix;
-		return completeRoman;
+		return prefix + middle + suffix;
 	}
 
 	private static String repeat(int repeatCount, RomanLimit limit) {
