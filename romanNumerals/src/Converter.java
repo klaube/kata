@@ -6,44 +6,44 @@
  */
 public class Converter {
 
-	public static String convertToRoman(final Integer latin) {
+	public static String convertToRoman(final Integer arabic) {
 		
 		String completeRoman = "";
 		
 		for (int i = 0; i < RomanLimit.values().length - 2; i+=2) {
 			
 			final RomanLimit currentLimit = RomanLimit.values()[i]; 
-			final Integer currentLatin = currentLimit.getLatin();
+			final Integer currentArabic = currentLimit.getArabic();
 			
 			final RomanLimit nextLimit = RomanLimit.values()[i+1];  
-			final Integer nextLatin = nextLimit.getLatin();
+			final Integer nextArabic = nextLimit.getArabic();
 			
 			final RomanLimit afterNextLimit = RomanLimit.values()[i+2]; 
-			final Integer afterNextLatin = afterNextLimit.getLatin();
+			final Integer afterNextArabic = afterNextLimit.getArabic();
 			
 			String prefix = "";
 			String middle = "";
 			String suffix = "";
 			
-			if (currentLatin == latin){
+			if (currentArabic == arabic){
 				return currentLimit.getRoman();
 			}
 			
-			if ( currentLatin < latin && latin < nextLatin - 1){
-				suffix = repeat(latin, currentLimit);
+			if ( currentArabic < arabic && arabic < nextArabic - 1){
+				suffix = repeat(arabic, currentLimit);
 			}
-			else if (latin == nextLatin - 1){
+			else if (arabic == nextArabic - 1){
 				prefix = currentLimit.getRoman();
 				middle = nextLimit.getRoman(); 
 			}
-			else if (latin == nextLatin){
+			else if (arabic == nextArabic){
 				middle = nextLimit.getRoman();
 			} 
-			else if (nextLatin < latin && latin < afterNextLatin - 1){
+			else if (nextArabic < arabic && arabic < afterNextArabic - 1){
 				middle = nextLimit.getRoman(); 
-				suffix = repeat(latin-nextLatin, currentLimit);				
+				suffix = repeat(arabic - nextArabic, currentLimit);
 			}
-			else if (latin == afterNextLatin - 1){ 
+			else if (arabic == afterNextArabic - 1){
 				prefix = currentLimit.getRoman();
 				middle = afterNextLimit.getRoman();
 			}
@@ -54,9 +54,9 @@ public class Converter {
 		return completeRoman;
 	}
 
-	private static String repeat(Integer latin, RomanLimit limit) {
+	private static String repeat(Integer arabic, RomanLimit limit) {
 		String repeated = "";
-		for (int i = 0; i < latin; i++) {
+		for (int i = 0; i < arabic; i++) {
 			repeated += limit.getRoman();
 		}
 		return repeated;

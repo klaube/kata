@@ -25,8 +25,8 @@ public class ConverterTest {
     	"8, VIII",
     	"9, IX",
     	"10, X"})
-    public void testConvertToRoman(Integer latin, String expectedRoman) {
-        String output = Converter.convertToRoman(latin);
+    public void testConvertToRoman(Integer arabic, String expectedRoman) {
+        String output = Converter.convertToRoman(arabic);
         assertThat(output, equalTo(expectedRoman));
     }
 
@@ -43,8 +43,8 @@ public class ConverterTest {
     	"18, XVIII",
     	"19, XIX",
     	"20, XX"})
-    public void testConvertToRomanFirstDecade(Integer latin, String expectedRoman) {
-        String output = Converter.convertToRoman(latin);
+    public void testConvertToRomanFirstDecade(Integer arabic, String expectedRoman) {
+        String output = Converter.convertToRoman(arabic);
         assertThat(output, equalTo(expectedRoman));
     }
 }
