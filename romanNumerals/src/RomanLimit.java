@@ -1,6 +1,8 @@
-
+import java.util.Arrays;
+import java.util.List;
 
 /**
+ * Enumeration of limits in roman numerals.
  * 
  * @author Katharina Laube
  * @since 26.01.2015
@@ -25,13 +27,21 @@ public enum RomanLimit {
 		this.isCounter = isCounter;
 	}
 	
-	String fromArabic(Integer arabic){
+	static String fromArabic(Integer arabic){
 		for (RomanLimit limit : RomanLimit.values()) {
 			if(limit.getArabic().equals(arabic)){
 				return limit.getRoman();
 			}
 		}
 		throw new IllegalArgumentException();
+	}
+	
+	static List<RomanLimit> getCounters(){
+		return Arrays.asList(M, C, X, I);
+	}
+	
+	static List<RomanLimit> getHalfs(){
+		return Arrays.asList(D, L, V);
 	}
 
 	String getRoman() {

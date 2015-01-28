@@ -23,8 +23,7 @@ public class ConverterTest {
     	"6, VI", 
     	"7, VII",
     	"8, VIII",
-    	"9, IX",
-    	"10, X"})
+    	"9, IX"})
     public void testConvertToRoman(Integer arabic, String expectedRoman) {
         String output = Converter.convertToRoman(arabic);
         assertThat(output, equalTo(expectedRoman));
@@ -45,6 +44,21 @@ public class ConverterTest {
     	"20, XX"})
     public void testConvertToRomanFirstDecade(Integer arabic, String expectedRoman) {
         String output = Converter.convertToRoman(arabic);
+        assertThat(output, equalTo(expectedRoman));
+    }
+
+    @Test
+    @Parameters({
+    	"10, X",
+    	"20, XX", 
+    	"30, XXX", 
+    	"200, CC", 
+    	"300, CCC", 
+    	"2000, MM", 
+    	"3000, MMM"
+    	})
+    public void testConvertToRomanSimpleRepeats(Integer arabic, String expectedRoman) {
+        String output = Converter.getSimpleRepeat(arabic, "");
         assertThat(output, equalTo(expectedRoman));
     }
 }
