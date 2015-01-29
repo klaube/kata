@@ -16,7 +16,7 @@ public enum RomanLimit {
 	C("C", 100),
 	D("D", 500),
 	M("M", 1000), 
-	UNKNOWN("UNKNOWN",-1);
+	UNKNOWN("UNKNOWN",-1); // needed to make converter code shorter
 	
 	private String roman;
 	private Integer arabic;
@@ -26,19 +26,16 @@ public enum RomanLimit {
 		this.arabic = arabic;
 	}
 	
-	static String fromArabic(Integer arabic){
-		for (RomanLimit limit : RomanLimit.values()) {
-			if(limit.getArabic().equals(arabic)){
-				return limit.getRoman();
-			}
-		}
-		throw new IllegalArgumentException();
-	}
-	
+	/**
+	 * @return letters that can be repeated in roman numerals
+	 */
 	static List<RomanLimit> getCounters(){
 		return Arrays.asList(I, X, C, M, UNKNOWN);
 	}
-	
+
+	/**
+	 * @return letters that cannot be repeated in roman numerals
+	 */
 	static List<RomanLimit> getHalfs(){
 		return Arrays.asList(V, L, D, UNKNOWN);
 	}

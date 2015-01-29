@@ -6,6 +6,12 @@
  */
 public class Converter {
 
+	/**
+	 * Converts an arabic numeral into a roman numeral.
+	 * 
+	 * @param arabic numeral between 1 and 3899
+	 * @return roman numeral
+	 */
 	public static String convertToRoman(final Integer arabic) {
 		
 		if (arabic <= 0 || arabic > 3899){
@@ -18,27 +24,24 @@ public class Converter {
 		char[] arabicString = arabic.toString().toCharArray();
 		for (int i = arabicString.length - 1, j=0; i >= 0 ; i--, j++) {
 			
+			// convert char back to Integer digit
 			char c = arabicString[i];
 			Integer arabicDigit = Character.getNumericValue(c);
+			
+			// add result of converted digit at start
 			completeRoman = getRomanLetter(arabicDigit, j) + completeRoman;
 		}
 		
 		return completeRoman;
 	}
 
-	public static String getSimpleRepeat(final Integer arabic, String completeRoman) {
-		int remainder = arabic;
-		for (RomanLimit counter : RomanLimit.getCounters()) {
-			
-			int div = (int) Math.nextUp((double) (remainder / counter.getArabic()));
-			completeRoman += repeat(div, counter);
-			
-			remainder = remainder % counter.getArabic();
-			
-		}
-		return completeRoman;
-	}
-
+	/**
+	 * Converts one arabic digit to roman numeral (letter(s)).
+	 * 
+	 * @param arabicDigit
+	 * @param i index of the digit within the arabic numeral beginning at the end
+	 * @return roman numeral (letter(s))
+	 */
 	private static String getRomanLetter(final Integer arabicDigit, int i) {
 		final RomanLimit currentCounterLimit = RomanLimit.getCounters().get(i); 
 		
@@ -51,24 +54,34 @@ public class Converter {
 		String middle = "";
 		String suffix = "";
 		
+		// i.e. I
 		if (1 == arabicDigit){
 			return currentCounterLimit.getRoman();
 		}
 		
+		// i.e. III
 		if ( 1 < arabicDigit && arabicDigit <= 3){
 			suffix = repeat(arabicDigit, currentCounterLimit);
 		}
+		
+		// i.e. IV
 		else if (arabicDigit == 4){
 			prefix = currentCounterLimit.getRoman();
 			middle = nextHalf.getRoman(); 
 		}
+		
+		// i.e. V
 		else if (arabicDigit == 5){
 			middle = nextHalf.getRoman();
 		} 
+		
+		// i.e. VII
 		else if (5 < arabicDigit && arabicDigit < 9){
 			middle = nextHalf.getRoman(); 
 			suffix = repeat(arabicDigit-nextHalfArabic, currentCounterLimit);				
 		}
+		
+		// i.e. IX
 		else if (arabicDigit == 9){ 
 			prefix = currentCounterLimit.getRoman();
 			middle = nextCounterLimit.getRoman();
