@@ -1,6 +1,7 @@
 package kanbanBoard;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -13,6 +14,13 @@ public class Board {
 	private int taskWiPCounter;
 	private int taskTestCounter;
 	
+	private static final HashMap<State, State> nextState = new HashMap<>();
+	static {
+		nextState.put(State.ToDo, State.WiP);
+		nextState.put(State.WiP, State.Test);
+		nextState.put(State.Test, State.Done);
+	}
+	
 	public Task addNewTask() {
 		return new Task();
 	}
@@ -21,7 +29,6 @@ public class Board {
 		
 		switch (task.getState()) {
 		case ToDo:
-			task.setState(State.WiP);
 			taskWiPCounter++;
 			
 			if(taskWiPCounter > 4) {
@@ -31,7 +38,6 @@ public class Board {
 			break;
 			
 		case WiP:
-			task.setState(State.Test);
 			taskTestCounter++;
 			
 			if(taskTestCounter > 3) {
@@ -39,13 +45,11 @@ public class Board {
 			}
 			
 			break;
-
-		case Test:
-			task.setState(State.Done);
-			break;
+			
 		default:
 			break;
 		}
+		task.setState(nextState.get(task.getState()));
 		
 		return task;
 	}
