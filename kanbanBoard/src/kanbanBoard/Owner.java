@@ -15,6 +15,25 @@ public class Owner {
 		this.name = name;
 	}
 
+	public void setNewState(State newState) {
+		switch (newState) {
+		case ToDo: return;
+		
+		case WiP: 
+			workInProgress = true;
+			return;
+			
+		case Test: 
+			workInProgress = false;
+			testing = true;
+			return;
+			
+		case Done:
+			testing = true;
+			return;
+		}
+	}
+
 	public boolean has(State newState) {
 		switch (newState) {
 		case WiP: return hasWorkInProgress();
@@ -34,25 +53,6 @@ public class Owner {
 	@Override
 	public String toString() {
 		return name;
-	}
-
-	public void setNewState(State newState) {
-		switch (newState) {
-		case ToDo: return;
-		
-		case WiP: 
-			workInProgress = true;
-			return;
-			
-		case Test: 
-			workInProgress = false;
-			testing = true;
-			return;
-			
-		case Done:
-			testing = true;
-			return;
-		}
 	}
 
 }
