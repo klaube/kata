@@ -9,6 +9,7 @@ package kanbanBoard;
 public class Task {
 	
 	private State state;
+	private Owner owner;
 
 	public Task() {
 		state = State.ToDo;
@@ -22,8 +23,12 @@ public class Task {
 		this.state = state;
 	}
 
-	public String getOwner() {
-		return "Sven";
+	public void setOwner(Owner owner) {
+		this.owner = owner;
+	}
+
+	public Owner getOwner() {
+		return owner;
 	}
 
 }

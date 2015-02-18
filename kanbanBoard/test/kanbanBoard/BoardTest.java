@@ -1,10 +1,12 @@
 package kanbanBoard;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+import java.util.HashSet;
 import java.util.List;
 
 import junitparams.JUnitParamsRunner;
@@ -54,7 +56,7 @@ public class BoardTest {
 	
 	@Test
 	public void a_board_has_an_initial_set_of_owner() {
-		List<String> result = cut.getOwners();
+		List<Owner> result = cut.getOwners();
 		assertEquals(4, result.size());
 	}
 	
@@ -63,9 +65,9 @@ public class BoardTest {
 		Task task = cut.addNewTask();
 		Task result = cut.pull(task);
 		
-		String ownerOfTask = result.getOwner();
+		Owner ownerOfTask = result.getOwner();
 		assertNotNull(ownerOfTask);
-		List<String> owners = cut.getOwners();
+		List<Owner> owners = cut.getOwners();
 		assertTrue(owners.contains(ownerOfTask));
 	}
 	
@@ -75,9 +77,9 @@ public class BoardTest {
 		Task taskWiP = cut.pull(taskToDo);
 		Task result = cut.pull(taskWiP);
 		
-		String ownerOfTask = result.getOwner();
+		Owner ownerOfTask = result.getOwner();
 		assertNotNull(ownerOfTask);
-		List<String> owners = cut.getOwners();
+		List<Owner> owners = cut.getOwners();
 		assertTrue(owners.contains(ownerOfTask));
 	}
 	
@@ -128,6 +130,33 @@ public class BoardTest {
 		Task result = cut.pull(taskTest);
 		
 		assertEquals(State.Done, result.getState());
+	}	
+	
+	@Test
+	public void an_owner_only_has_one_task_wip() {
+		
+		final HashSet<Owner> owners = new HashSet<>();
+		
+		addTaskPullAndCheckOwner(owners);
+		addTaskPullAndCheckOwner(owners);
+		addTaskPullAndCheckOwner(owners);
+		addTaskPullAndCheckOwner(owners);
+		
+		try {
+			addTaskPullAndCheckOwner(owners);
+			fail();
+		} catch (IllegalArgumentException e){
+			// expected
+		}
+	}
+
+	private void addTaskPullAndCheckOwner(final HashSet<Owner> owners) {
+		final Task taskToDo = cut.addNewTask();
+		final Task taskWiP = cut.pull(taskToDo);
+		
+		final Owner owner = taskWiP.getOwner();
+		assertFalse(owners.contains(owner));
+		owners.add(owner);
 	}
 
 }

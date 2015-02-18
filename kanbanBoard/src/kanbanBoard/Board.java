@@ -13,12 +13,21 @@ public class Board {
 	
 	private int taskWiPCounter;
 	private int taskTestCounter;
+	private List<Owner> owners;
 	
 	private static final HashMap<State, State> nextState = new HashMap<>();
 	static {
 		nextState.put(State.ToDo, State.WiP);
 		nextState.put(State.WiP, State.Test);
 		nextState.put(State.Test, State.Done);
+	}
+	
+	public Board() {
+		owners = Arrays.asList(
+				new Owner("Sven"), 
+				new Owner("Michael"), 
+				new Owner("Isabel"), 
+				new Owner("Katharina"));
 	}
 	
 	public Task addNewTask() {
@@ -29,33 +38,41 @@ public class Board {
 		
 		switch (task.getState()) {
 		case ToDo:
-			taskWiPCounter++;
 			
-			if(taskWiPCounter > 4) {
+			if(taskWiPCounter >= 4) {
 				throw new IllegalArgumentException("No owner available anymore.");
 			}
-			
+			taskWiPCounter++;
 			break;
 			
 		case WiP:
-			taskTestCounter++;
 			
-			if(taskTestCounter > 3) {
+			if(taskTestCounter >= 3) {
 				throw new IllegalArgumentException("No owner available anymore.");
 			}
-			
+			taskWiPCounter--;
+			taskTestCounter++;
 			break;
 			
 		default:
 			break;
 		}
-		task.setState(nextState.get(task.getState()));
 		
+		final State newState = nextState.get(task.getState());
+		task.setState(newState);
+		
+		for (Owner owner : owners) {
+			if(!owner.has(newState)){
+				task.setOwner(owner);
+				owner.setNewState(newState);
+				break;
+			}
+		}
 		return task;
 	}
 
-	public List<String> getOwners() {
-		return Arrays.asList("Sven","Michael","Isabel","Katharina");
+	public List<Owner> getOwners() {
+		return owners;
 	}
 
 }
