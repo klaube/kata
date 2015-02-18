@@ -37,6 +37,12 @@ public class BoardTest {
 		assertNotNull(result.getState());
 		assertEquals(State.ToDo, result.getState());
 	}
+
+	@Test
+	public void a_new_board_should_have_10_tasks_toDo() {
+		List<Task> result = cut.getTasks(State.ToDo);
+		assertEquals(10, result.size());
+	}
 	
 	@Test
 	public void a_toDo_task_should_be_pulled_to_wip() {
@@ -58,6 +64,12 @@ public class BoardTest {
 	public void a_board_has_an_initial_set_of_owner() {
 		List<Owner> result = cut.getOwners();
 		assertEquals(4, result.size());
+		
+		// owner of new board have nothing to do
+		for (Owner owner : result) {
+			assertFalse(owner.hasWorkInProgress());
+			assertFalse(owner.isTesting());
+		}
 	}
 	
 	@Test
@@ -69,6 +81,8 @@ public class BoardTest {
 		assertNotNull(ownerOfTask);
 		List<Owner> owners = cut.getOwners();
 		assertTrue(owners.contains(ownerOfTask));
+		assertTrue(ownerOfTask.hasWorkInProgress());
+		assertFalse(ownerOfTask.isTesting());
 	}
 	
 	@Test
@@ -81,6 +95,8 @@ public class BoardTest {
 		assertNotNull(ownerOfTask);
 		List<Owner> owners = cut.getOwners();
 		assertTrue(owners.contains(ownerOfTask));
+		assertFalse(ownerOfTask.hasWorkInProgress());
+		assertTrue(ownerOfTask.isTesting());
 	}
 	
 	@Test
@@ -137,24 +153,51 @@ public class BoardTest {
 		
 		final HashSet<Owner> owners = new HashSet<>();
 		
-		addTaskPullAndCheckOwner(owners);
-		addTaskPullAndCheckOwner(owners);
-		addTaskPullAndCheckOwner(owners);
-		addTaskPullAndCheckOwner(owners);
+		addTaskPullToWipAndCheckOwner(owners);
+		addTaskPullToWipAndCheckOwner(owners);
+		addTaskPullToWipAndCheckOwner(owners);
+		addTaskPullToWipAndCheckOwner(owners);
 		
 		try {
-			addTaskPullAndCheckOwner(owners);
+			addTaskPullToWipAndCheckOwner(owners);
 			fail();
 		} catch (IllegalArgumentException e){
 			// expected
 		}
 	}
 
-	private void addTaskPullAndCheckOwner(final HashSet<Owner> owners) {
+	private void addTaskPullToWipAndCheckOwner(final HashSet<Owner> owners) {
 		final Task taskToDo = cut.addNewTask();
 		final Task taskWiP = cut.pull(taskToDo);
 		
 		final Owner owner = taskWiP.getOwner();
+		assertFalse(owners.contains(owner));
+		owners.add(owner);
+	}	
+	
+	@Test
+	public void an_owner_only_has_one_task_test() {
+		
+		final HashSet<Owner> owners = new HashSet<>();
+		
+		addTaskPullToTestAndCheckOwner(owners);
+		addTaskPullToTestAndCheckOwner(owners);
+		addTaskPullToTestAndCheckOwner(owners);
+		
+		try {
+			addTaskPullToTestAndCheckOwner(owners);
+			fail();
+		} catch (IllegalArgumentException e){
+			// expected
+		}
+	}
+
+	private void addTaskPullToTestAndCheckOwner(final HashSet<Owner> owners) {
+		final Task taskToDo = cut.addNewTask();
+		final Task taskWiP = cut.pull(taskToDo);
+		final Task taskTest = cut.pull(taskWiP);
+		
+		final Owner owner = taskTest.getOwner();
 		assertFalse(owners.contains(owner));
 		owners.add(owner);
 	}

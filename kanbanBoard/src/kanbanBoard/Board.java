@@ -1,5 +1,6 @@
 package kanbanBoard;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -14,6 +15,7 @@ public class Board {
 	private int taskWiPCounter;
 	private int taskTestCounter;
 	private List<Owner> owners;
+	private HashMap<State, List<Task>> tasks;
 	
 	private static final HashMap<State, State> nextState = new HashMap<>();
 	static {
@@ -28,6 +30,13 @@ public class Board {
 				new Owner("Michael"), 
 				new Owner("Isabel"), 
 				new Owner("Katharina"));
+		
+		tasks = new HashMap<>();
+		for (int i = 0; i < 10; i++) {
+			List<Task> todos = tasks.getOrDefault(State.ToDo, new ArrayList<>());
+			todos.add(addNewTask());
+			tasks.put(State.ToDo, todos);
+		}
 	}
 	
 	public Task addNewTask() {
@@ -73,6 +82,10 @@ public class Board {
 
 	public List<Owner> getOwners() {
 		return owners;
+	}
+
+	List<Task> getTasks(State state) {
+		return tasks.get(state);
 	}
 
 }
