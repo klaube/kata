@@ -129,7 +129,7 @@ public class BoardTest {
 	}
 	
 	@Test
-	public void a_wip_task_should_be_pulled_to_test() {
+	public void a_wip_task_should_be_puushed_to_test() {
 		Task taskToDo = cut.createNewTask();
 		Task taskWiP = cut.push(taskToDo);
 		Task result = cut.push(taskWiP);
@@ -138,7 +138,7 @@ public class BoardTest {
 	}
 	
 	@Test
-	public void a_test_task_should_be_pulled_to_done() {
+	public void a_test_task_should_be_pushed_to_done() {
 		Task taskToDo = cut.createNewTask();
 		Task taskWiP = cut.push(taskToDo);
 		Task taskTest = cut.push(taskWiP);
