@@ -33,20 +33,25 @@ public class BoardTest {
 
 	@Test
 	public void a_new_task_should_have_state_toDo() {
-		Task result = cut.addNewTask();
+		Task result = cut.createNewTask();
 		assertNotNull(result.getState());
 		assertEquals(State.ToDo, result.getState());
 	}
 
 	@Test
-	public void a_new_board_should_have_10_tasks_toDo() {
-		List<Task> result = cut.getTasks(State.ToDo);
-		assertEquals(10, result.size());
+    @Parameters({
+    	"ToDo, 10", 
+    	"WiP, 0", 
+    	"Test, 0", 
+    	"Done, 0"})
+	public void a_new_board_should_have_tasks_only_with_state_toDo(State state, int numberOfTasks) {
+		List<Task> result = cut.getTasks(state);
+		assertEquals(numberOfTasks, result.size());
 	}
 	
 	@Test
 	public void a_toDo_task_should_be_pulled_to_wip() {
-		Task task = cut.addNewTask();
+		Task task = cut.createNewTask();
 		Task result = cut.pull(task);
 		
 		assertEquals(State.WiP, result.getState());
@@ -54,7 +59,7 @@ public class BoardTest {
 	
 	@Test
 	public void a_task_with_state_wip_must_have_an_owner() {
-		Task task = cut.addNewTask();
+		Task task = cut.createNewTask();
 		Task result = cut.pull(task);
 		
 		assertNotNull(result.getOwner());
@@ -74,7 +79,7 @@ public class BoardTest {
 	
 	@Test
 	public void a_task_with_state_wip_must_have_an_owner_from_board() {
-		Task task = cut.addNewTask();
+		Task task = cut.createNewTask();
 		Task result = cut.pull(task);
 		
 		Owner ownerOfTask = result.getOwner();
@@ -87,7 +92,7 @@ public class BoardTest {
 	
 	@Test
 	public void a_task_with_state_test_must_have_an_owner_from_board() {
-		Task taskToDo = cut.addNewTask();
+		Task taskToDo = cut.createNewTask();
 		Task taskWiP = cut.pull(taskToDo);
 		Task result = cut.pull(taskWiP);
 		
@@ -107,7 +112,7 @@ public class BoardTest {
     	"4"})
 	public void maximum_4_tasks_with_state_wip_are_allow(int numberOfTasks) throws Exception {
 		for (int i = 0; i < numberOfTasks; i++) {
-			Task task = cut.addNewTask();
+			Task task = cut.createNewTask();
 			cut.pull(task);
 		}
 	}	
@@ -116,12 +121,12 @@ public class BoardTest {
 	public void adding_the_fifth_task_with_state_wip_should_throw_exception() {
 		
 		for (int i = 0; i < 4; i++) {
-			Task task = cut.addNewTask();
+			Task task = cut.createNewTask();
 			cut.pull(task);
 		}
 
 		try {
-			Task task = cut.addNewTask();
+			Task task = cut.createNewTask();
 			cut.pull(task);
 			fail();
 		} catch (IllegalArgumentException e) {
@@ -131,7 +136,7 @@ public class BoardTest {
 	
 	@Test
 	public void a_wip_task_should_be_pulled_to_test() {
-		Task taskToDo = cut.addNewTask();
+		Task taskToDo = cut.createNewTask();
 		Task taskWiP = cut.pull(taskToDo);
 		Task result = cut.pull(taskWiP);
 		
@@ -140,7 +145,7 @@ public class BoardTest {
 	
 	@Test
 	public void a_test_task_should_be_pulled_to_done() {
-		Task taskToDo = cut.addNewTask();
+		Task taskToDo = cut.createNewTask();
 		Task taskWiP = cut.pull(taskToDo);
 		Task taskTest = cut.pull(taskWiP);
 		Task result = cut.pull(taskTest);
@@ -167,7 +172,7 @@ public class BoardTest {
 	}
 
 	private void addTaskPullToWipAndCheckOwner(final HashSet<Owner> owners) {
-		final Task taskToDo = cut.addNewTask();
+		final Task taskToDo = cut.createNewTask();
 		final Task taskWiP = cut.pull(taskToDo);
 		
 		final Owner owner = taskWiP.getOwner();
@@ -193,7 +198,7 @@ public class BoardTest {
 	}
 
 	private void addTaskPullToTestAndCheckOwner(final HashSet<Owner> owners) {
-		final Task taskToDo = cut.addNewTask();
+		final Task taskToDo = cut.createNewTask();
 		final Task taskWiP = cut.pull(taskToDo);
 		final Task taskTest = cut.pull(taskWiP);
 		

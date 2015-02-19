@@ -6,6 +6,8 @@ import java.util.HashMap;
 import java.util.List;
 
 /**
+ * Each column of the board is represented by a state.
+ * The tasks of the board are in a certain state.
  * 
  * @author Isabel Batista, Katharina Laube
  * @since 18.02.2015
@@ -34,12 +36,12 @@ public class Board {
 		tasks = new HashMap<>();
 		for (int i = 0; i < 10; i++) {
 			List<Task> todos = tasks.getOrDefault(State.ToDo, new ArrayList<>());
-			todos.add(addNewTask());
+			todos.add(createNewTask());
 			tasks.put(State.ToDo, todos);
 		}
 	}
 	
-	public Task addNewTask() {
+	public Task createNewTask() {
 		return new Task();
 	}
 
@@ -85,7 +87,7 @@ public class Board {
 	}
 
 	List<Task> getTasks(State state) {
-		return tasks.get(state);
+		return tasks.getOrDefault(state, new ArrayList<>());
 	}
 
 }
