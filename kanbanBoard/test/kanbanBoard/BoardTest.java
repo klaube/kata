@@ -32,13 +32,6 @@ public class BoardTest {
 	}
 
 	@Test
-	public void a_new_task_should_have_state_toDo() {
-		Task result = cut.createNewTask();
-		assertNotNull(result.getState());
-		assertEquals(State.ToDo, result.getState());
-	}
-
-	@Test
     @Parameters({
     	"ToDo, 10", 
     	"WiP, 0", 
@@ -50,7 +43,19 @@ public class BoardTest {
 	}
 	
 	@Test
-	public void a_toDo_task_should_be_pulled_to_wip() {
+	public void a_board_has_an_initial_set_of_owner() {
+		List<Owner> result = cut.getOwners();
+		assertEquals(4, result.size());
+		
+		// owner of new board have nothing to do
+		for (Owner owner : result) {
+			assertFalse(owner.hasWorkInProgress());
+			assertFalse(owner.isTesting());
+		}
+	}
+	
+	@Test
+	public void a_wip_task_should_be_pulled_from_todo() {
 		Task taskWip = cut.pull(State.WiP);
 		
 		assertEquals(State.WiP, taskWip.getState());
@@ -64,18 +69,6 @@ public class BoardTest {
 		Task result = cut.push(task);
 		
 		assertNotNull(result.getOwner());
-	}
-	
-	@Test
-	public void a_board_has_an_initial_set_of_owner() {
-		List<Owner> result = cut.getOwners();
-		assertEquals(4, result.size());
-		
-		// owner of new board have nothing to do
-		for (Owner owner : result) {
-			assertFalse(owner.hasWorkInProgress());
-			assertFalse(owner.isTesting());
-		}
 	}
 	
 	@Test
