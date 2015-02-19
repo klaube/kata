@@ -19,11 +19,19 @@ public class Board {
 	private List<Owner> owners;
 	private HashMap<State, List<Task>> tasks;
 	
+	// TODO use a LinkedList to union nextState and previousState
 	private static final HashMap<State, State> nextState = new HashMap<>();
 	static {
 		nextState.put(State.ToDo, State.WiP);
 		nextState.put(State.WiP, State.Test);
 		nextState.put(State.Test, State.Done);
+	}
+	
+	private static final HashMap<State, State> previousStates = new HashMap<>();
+	static {
+		previousStates.put(State.WiP, State.ToDo);
+		previousStates.put(State.Test, State.WiP);
+		previousStates.put(State.Done, State.Test);
 	}
 	
 	public Board() {
@@ -41,11 +49,11 @@ public class Board {
 		}
 	}
 	
-	public Task createNewTask() {
+	Task createNewTask() {
 		return new Task();
 	}
 
-	public Task pull(Task task) {
+	Task push(Task task) {
 		
 		switch (task.getState()) {
 		case ToDo:
@@ -82,12 +90,33 @@ public class Board {
 		return task;
 	}
 
-	public List<Owner> getOwners() {
+	List<Owner> getOwners() {
 		return owners;
 	}
 
 	List<Task> getTasks(State state) {
 		return tasks.getOrDefault(state, new ArrayList<>());
+	}
+
+	public Task pull(State newState) {
+		
+		final State previousState = previousStates.get(newState);
+		final List<Task> tasksOfPreviousState = getTasks(previousState);
+		final int numberOfOpenTasks = tasksOfPreviousState.size();
+		if (numberOfOpenTasks == 0) {
+			return null;
+		}
+		
+		// remove task from previous state
+		final Task taskWithPreviousState = tasksOfPreviousState.remove(numberOfOpenTasks - 1);
+		Task taskWithNewState = push(taskWithPreviousState);
+		tasks.put(previousState, tasksOfPreviousState);
+		
+		// move task to new state
+		final List<Task> tasksOfNewState = getTasks(newState);
+		tasksOfNewState.add(taskWithNewState);
+		tasks.put(newState, tasksOfNewState);
+		return taskWithNewState;
 	}
 
 }
