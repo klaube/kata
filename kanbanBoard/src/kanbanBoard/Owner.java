@@ -1,5 +1,7 @@
 package kanbanBoard;
 
+import java.util.HashMap;
+
 /**
  * An owner is a person who owns a task.
  * An owner is only allowed to own one task with state Work-in-Progress
@@ -11,38 +13,23 @@ package kanbanBoard;
 public class Owner {
 
 	private String name;
-	private boolean workInProgress;
-	private boolean testing;
+	private HashMap<State, Boolean> ownership;
 
 	public Owner(String name) {
 		this.name = name;
+		ownership = new HashMap<>();
+	}
+
+	public void removePreviousState(State previousState) {
+		ownership.put(previousState, false);
 	}
 
 	public void setNewState(State newState) {
-		switch (newState) {
-		case ToDo: return;
-		
-		case WiP: 
-			workInProgress = true;
-			return;
-			
-		case Test: 
-			workInProgress = false;
-			testing = true;
-			return;
-			
-		case Done:
-			testing = true;
-			return;
-		}
+		ownership.put(newState, true);
 	}
 
 	public boolean has(State newState) {
-		switch (newState) {
-		case WiP: return workInProgress;
-		case Test: return testing;
-		default: return false;
-		}
+		return ownership.getOrDefault(newState, false);
 	}
 
 	@Override

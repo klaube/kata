@@ -73,25 +73,6 @@ public class BoardTest {
 	}
 	
 	@Test
-	public void a_task_with_state_test_must_have_an_owner_from_board() {
-		cut.pull(State.WiP);
-		Task taskTest = cut.pull(State.Test);
-		
-		Owner ownerOfTask = taskTest.getOwner();
-		assertNotNull(ownerOfTask);
-		List<Owner> owners = cut.getOwners();
-		assertTrue(owners.contains(ownerOfTask));
-		assertFalse(ownerOfTask.has(State.WiP));
-		assertTrue(ownerOfTask.has(State.Test));
-	}
-	
-	@Test
-	public void a_task_with_state_wip_must_have_an_owner() {
-		Task result = cut.pull(State.WiP);		
-		assertNotNull(result.getOwner());
-	}
-	
-	@Test
 	public void a_board_has_an_initial_set_of_owner() {
 		List<Owner> result = cut.getOwners();
 		assertEquals(4, result.size());
@@ -107,6 +88,12 @@ public class BoardTest {
 	}
 	
 	@Test
+	public void a_task_with_state_wip_must_have_an_owner() {
+		Task result = cut.pull(State.WiP);		
+		assertNotNull(result.getOwner());
+	}
+	
+	@Test
 	public void a_task_with_state_wip_must_have_an_owner_from_board() {
 		Task result = cut.pull(State.WiP);		
 		
@@ -119,24 +106,37 @@ public class BoardTest {
 	}
 	
 	@Test
-	public void an_owner_only_has_one_task_wip() {
+	public void a_task_with_state_test_must_have_an_owner_from_board() {
+		cut.pull(State.WiP);
+		Task taskTest = cut.pull(State.Test);
+		
+		Owner ownerOfTask = taskTest.getOwner();
+		assertNotNull(ownerOfTask);
+		List<Owner> owners = cut.getOwners();
+		assertTrue(owners.contains(ownerOfTask));
+		assertFalse(ownerOfTask.has(State.WiP));
+		assertTrue(ownerOfTask.has(State.Test));
+	}
+	
+	@Test
+	public void only_four_task_in_state_work_in_progress_are_allowed() {
 		
 		final HashSet<Owner> owners = new HashSet<>();
 		
-		addTaskPullToWipAndCheckOwner(owners);
-		addTaskPullToWipAndCheckOwner(owners);
-		addTaskPullToWipAndCheckOwner(owners);
-		addTaskPullToWipAndCheckOwner(owners);
+		pullToWipAndCheckOwner(owners);
+		pullToWipAndCheckOwner(owners);
+		pullToWipAndCheckOwner(owners);
+		pullToWipAndCheckOwner(owners);
 		
 		try {
-			addTaskPullToWipAndCheckOwner(owners);
+			pullToWipAndCheckOwner(owners);
 			fail();
 		} catch (IllegalStateException e){
 			// expected
 		}
 	}
 
-	private void addTaskPullToWipAndCheckOwner(final HashSet<Owner> owners) {
+	private void pullToWipAndCheckOwner(final HashSet<Owner> owners) {
 		final Task taskWiP = cut.pull(State.WiP);
 		 
 		final Owner owner = taskWiP.getOwner();
@@ -145,23 +145,23 @@ public class BoardTest {
 	}	
 	
 	@Test
-	public void an_owner_only_has_one_task_test() {
+	public void only_three_tasks_in_state_test_are_allowed() {
 		
 		final HashSet<Owner> owners = new HashSet<>();
 		
-		addTaskPullToTestAndCheckOwner(owners);
-		addTaskPullToTestAndCheckOwner(owners);
-		addTaskPullToTestAndCheckOwner(owners);
+		pullToTestAndCheckOwner(owners);
+		pullToTestAndCheckOwner(owners);
+		pullToTestAndCheckOwner(owners);
 		
 		try {
-			addTaskPullToTestAndCheckOwner(owners);
+			pullToTestAndCheckOwner(owners);
 			fail();
 		} catch (IllegalStateException e){
 			// expected
 		}
 	}
 
-	private void addTaskPullToTestAndCheckOwner(final HashSet<Owner> owners) {
+	private void pullToTestAndCheckOwner(final HashSet<Owner> owners) {
 		cut.pull(State.WiP);
 		final Task taskTest = cut.pull(State.Test);
 		

@@ -59,6 +59,7 @@ public class Board {
 		for (Owner owner : owners) {
 			if(!owner.has(newState)){
 				task.setOwner(owner);
+				owner.removePreviousState(previousState);
 				owner.setNewState(newState);
 				break;
 			}
