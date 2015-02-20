@@ -3,6 +3,7 @@ package kanbanBoard;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
@@ -17,7 +18,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 /**
- * 
  * @author Isabel Batista, Katharina Laube
  * @since 18.02.2015
  */
@@ -41,6 +41,17 @@ public class BoardTest {
 		List<Task> result = cut.getTasks(state);
 		assertEquals(numberOfTasks, result.size());
 	}
+
+	@Test
+    @Parameters({
+    	"ToDo, -1", 
+    	"WiP, 4", 
+    	"Test, 3", 
+    	"Done, -1"})
+	public void only_columns_wip_and_test_should_have_an_limit(State state, int limit) throws Exception {
+		Column column = cut.getColumn(state);
+		assertEquals(limit, column.getLimit());
+	}
 	
 	@Test
 	public void a_wip_task_should_be_pulled_from_todo() {
@@ -52,10 +63,31 @@ public class BoardTest {
 	}
 	
 	@Test
-	public void a_task_with_state_wip_must_have_an_owner() {
-		Task task = cut.createNewTask();
-		Task result = cut.push(task);
+	public void a_test_task_should_be_pulled_from_test() {
+		cut.pull(State.WiP);
+		Task taskTest = cut.pull(State.Test);
+
+		assertEquals(State.Test, taskTest.getState());
+		assertFalse(cut.getTasks(State.WiP).contains(taskTest));
+		assertTrue(cut.getTasks(State.Test).contains(taskTest));
+	}
+	
+	@Test
+	public void a_task_with_state_test_must_have_an_owner_from_board() {
+		cut.pull(State.WiP);
+		Task taskTest = cut.pull(State.Test);
 		
+		Owner ownerOfTask = taskTest.getOwner();
+		assertNotNull(ownerOfTask);
+		List<Owner> owners = cut.getOwners();
+		assertTrue(owners.contains(ownerOfTask));
+		assertFalse(ownerOfTask.has(State.WiP));
+		assertTrue(ownerOfTask.has(State.Test));
+	}
+	
+	@Test
+	public void a_task_with_state_wip_must_have_an_owner() {
+		Task result = cut.pull(State.WiP);		
 		assertNotNull(result.getOwner());
 	}
 	
@@ -63,89 +95,28 @@ public class BoardTest {
 	public void a_board_has_an_initial_set_of_owner() {
 		List<Owner> result = cut.getOwners();
 		assertEquals(4, result.size());
+	}
+	
+	@Test
+	public void todo_tasks_do_not_have_an_owner() {
+		List<Task> result = cut.getTasks(State.ToDo);
 		
-		// owner of new board have nothing to do
-		for (Owner owner : result) {
-			assertFalse(owner.hasWorkInProgress());
-			assertFalse(owner.isTesting());
+		for (Task taskToDo : result) {
+			assertNull(taskToDo.getOwner());
 		}
 	}
 	
 	@Test
 	public void a_task_with_state_wip_must_have_an_owner_from_board() {
-		Task task = cut.createNewTask();
-		Task result = cut.push(task);
+		Task result = cut.pull(State.WiP);		
 		
 		Owner ownerOfTask = result.getOwner();
 		assertNotNull(ownerOfTask);
 		List<Owner> owners = cut.getOwners();
 		assertTrue(owners.contains(ownerOfTask));
-		assertTrue(ownerOfTask.hasWorkInProgress());
-		assertFalse(ownerOfTask.isTesting());
+		assertTrue(ownerOfTask.has(State.WiP));
+		assertFalse(ownerOfTask.has(State.Test));
 	}
-	
-	@Test
-	public void a_task_with_state_test_must_have_an_owner_from_board() {
-		Task taskToDo = cut.createNewTask();
-		Task taskWiP = cut.push(taskToDo);
-		Task result = cut.push(taskWiP);
-		
-		Owner ownerOfTask = result.getOwner();
-		assertNotNull(ownerOfTask);
-		List<Owner> owners = cut.getOwners();
-		assertTrue(owners.contains(ownerOfTask));
-		assertFalse(ownerOfTask.hasWorkInProgress());
-		assertTrue(ownerOfTask.isTesting());
-	}
-	
-	@Test
-    @Parameters({
-    	"1", 
-    	"2", 
-    	"3", 
-    	"4"})
-	public void maximum_4_tasks_with_state_wip_are_allow(int numberOfTasks) throws Exception {
-		for (int i = 0; i < numberOfTasks; i++) {
-			Task task = cut.createNewTask();
-			cut.push(task);
-		}
-	}	
-	
-	@Test
-	public void adding_the_fifth_task_with_state_wip_should_throw_exception() {
-		
-		for (int i = 0; i < 4; i++) {
-			Task task = cut.createNewTask();
-			cut.push(task);
-		}
-
-		try {
-			Task task = cut.createNewTask();
-			cut.push(task);
-			fail();
-		} catch (IllegalArgumentException e) {
-			// expected
-		}
-	}
-	
-	@Test
-	public void a_wip_task_should_be_puushed_to_test() {
-		Task taskToDo = cut.createNewTask();
-		Task taskWiP = cut.push(taskToDo);
-		Task result = cut.push(taskWiP);
-		
-		assertEquals(State.Test, result.getState());
-	}
-	
-	@Test
-	public void a_test_task_should_be_pushed_to_done() {
-		Task taskToDo = cut.createNewTask();
-		Task taskWiP = cut.push(taskToDo);
-		Task taskTest = cut.push(taskWiP);
-		Task result = cut.push(taskTest);
-		
-		assertEquals(State.Done, result.getState());
-	}	
 	
 	@Test
 	public void an_owner_only_has_one_task_wip() {
@@ -160,15 +131,14 @@ public class BoardTest {
 		try {
 			addTaskPullToWipAndCheckOwner(owners);
 			fail();
-		} catch (IllegalArgumentException e){
+		} catch (IllegalStateException e){
 			// expected
 		}
 	}
 
 	private void addTaskPullToWipAndCheckOwner(final HashSet<Owner> owners) {
-		final Task taskToDo = cut.createNewTask();
-		final Task taskWiP = cut.push(taskToDo);
-		
+		final Task taskWiP = cut.pull(State.WiP);
+		 
 		final Owner owner = taskWiP.getOwner();
 		assertFalse(owners.contains(owner));
 		owners.add(owner);
@@ -186,15 +156,14 @@ public class BoardTest {
 		try {
 			addTaskPullToTestAndCheckOwner(owners);
 			fail();
-		} catch (IllegalArgumentException e){
+		} catch (IllegalStateException e){
 			// expected
 		}
 	}
 
 	private void addTaskPullToTestAndCheckOwner(final HashSet<Owner> owners) {
-		final Task taskToDo = cut.createNewTask();
-		final Task taskWiP = cut.push(taskToDo);
-		final Task taskTest = cut.push(taskWiP);
+		cut.pull(State.WiP);
+		final Task taskTest = cut.pull(State.Test);
 		
 		final Owner owner = taskTest.getOwner();
 		assertFalse(owners.contains(owner));

@@ -1,6 +1,9 @@
 package kanbanBoard;
 
 /**
+ * An owner is a person who owns a task.
+ * An owner is only allowed to own one task with state Work-in-Progress
+ * and one testing task in parallel.
  * 
  * @author Katharina Laube
  * @since 18.02.2015
@@ -36,23 +39,14 @@ public class Owner {
 
 	public boolean has(State newState) {
 		switch (newState) {
-		case WiP: return hasWorkInProgress();
-		case Test: return isTesting();
-		default: return true;
+		case WiP: return workInProgress;
+		case Test: return testing;
+		default: return false;
 		}
-	}
-
-	boolean isTesting() {
-		return testing;
-	}
-	
-	boolean hasWorkInProgress() {
-		return workInProgress;
 	}
 
 	@Override
 	public String toString() {
 		return name;
 	}
-
 }
