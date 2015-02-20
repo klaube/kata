@@ -2,8 +2,8 @@
 
 Java Code by Isabel Batista and Katharina Laube
 
-Written during the [Agile Developer Meeting @ epost Berlin] 
-(http://www.meetup.com/)
+Written during and finished after the [Agile Developer Meeting @ epost Berlin] 
+(http://www.meetup.com/Agile-Developers-Berlin/events/220066998/)
 
 Runs with *JUnit 4.11* and *JUnitParams 1.0.4* as testing framework.
 
