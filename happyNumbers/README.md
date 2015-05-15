@@ -5,7 +5,7 @@ Java Code by Oliver Jahns und Katharina Laube
 Written during the [Softwerkskammer Magdeburg Meeting @ selectline] 
 (https://www.softwerkskammer.org/activities/magdeburg_treffen_21)
 
-Runs with *JUnit 4.11* and *JUnitParams 1.0.3* as testing framework.
+Runs with *JUnit 4.11* and *JUnitParams 1.0.4* as testing framework.
 
 **Business Requirements**
 Write a function that calculates if a number is happy or not.
