@@ -1,5 +1,6 @@
 package gol;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import junitparams.JUnitParamsRunner;
@@ -39,6 +40,22 @@ public class GameTest {
 		game.createCell(2,1);
 		game.createCell(2,2);
 		assertFalse(game.isAliveInNextGeneration(1,1));
+	}
+	
+
+	
+	@Test
+	public void testNeighbourCount0() throws Exception {
+		assertEquals(0, game.getNeighbourCount(1,1));
+	}
+	
+	@Test
+	public void testNeighbourCount3() throws Exception {
+		game.createCell(0,0);
+		game.createCell(0,1);
+		game.createCell(1,0);
+		game.createCell(1,1);
+		assertEquals(3,game.getNeighbourCount(0,0));
 	}
 	
 	@Ignore

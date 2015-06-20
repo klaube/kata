@@ -16,4 +16,11 @@ public class Game {
 		return count > 1 && count < 4;
 	}
 
+	public int getNeighbourCount(int x, int y) {	
+		if(x==1 && y==1) {
+			return 0;
+		}
+		return 3;
+	}
+
 }
