@@ -2,10 +2,15 @@ package gol;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import junitparams.JUnitParamsRunner;
+import junitparams.Parameters;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
+@RunWith(JUnitParamsRunner.class)
 public class GameTest {
 	
 	private Game game;
@@ -34,6 +39,22 @@ public class GameTest {
 		game.createCell(2,1);
 		game.createCell(2,2);
 		assertFalse(game.isAliveInNextGeneration(1,1));
+	}
+	
+	@Ignore
+	@Test
+	@Parameters({
+		"0,0",
+//		"0,1",
+//		"1,0",
+//		"1,1",
+	})
+	public void testThatASquareOfCellsStaysImmortal(int x, int y) throws Exception {
+		game.createCell(0,0);
+		game.createCell(0,1);
+		game.createCell(1,0);
+		game.createCell(1,1);
+		assertTrue(game.isAliveInNextGeneration(x,y));
 	}
 	
 }
