@@ -12,11 +12,12 @@ public class GameTest {
 	@Before
 	public void setUp() {
 		game = new Game();
+		game.createCell(1,1);
 	}
 	
 	@Test
 	public void aLonelyCellShouldDie() throws Exception {
-		assertFalse(game.isAliveInNextGeneration());
+		assertFalse(game.isAliveInNextGeneration(1,1));
 	}
 	
 }
