@@ -28,4 +28,12 @@ public class GameTest {
 		assertTrue(game.isAliveInNextGeneration(1,1));
 	}
 	
+	@Test
+	public void testIfCellWithFourNeighborsDies() throws Exception {
+		game.createCell(0,1);
+		game.createCell(2,1);
+		game.createCell(2,2);
+		assertFalse(game.isAliveInNextGeneration(1,1));
+	}
+	
 }

@@ -13,7 +13,7 @@ public class Game {
 	}
 
 	public boolean isAliveInNextGeneration(int x, int y) {
-		return count > 1;
+		return count > 1 && count < 4;
 	}
 
 }
