@@ -2,15 +2,18 @@ package gol;
 
 public class Game {
 
+	private int count;
+
 	public boolean isAliveInNextGeneration() {
 		return false;
 	}
 
 	public void createCell(int x, int y) {
+		count++;
 	}
 
 	public boolean isAliveInNextGeneration(int x, int y) {
-		return false;
+		return count > 1;
 	}
 
 }
