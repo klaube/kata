@@ -2,12 +2,12 @@
 
 Refactoring kata from [Github emilybache/GildedRose-Refactoring-Kata] (https://github.com/emilybache/GildedRose-Refactoring-Kata)
 
-Refactored Java Code by ? und Katharina Laube
+Refactored Java Code by Katharina Laube
 
-Refactored during the [Softwerkskammer Meeting @ hub:raum] 
+Refactored after the [Softwerkskammer Meeting @ hub:raum] 
 (http://www.meetup.com/de/Software-Craftsmanship-Berlin/events/210424512/)
 
-Runs with *JUnit 4.12* and *hamcrest 1.3* as testing frameworks.
+Runs with *JUnit 4.12* and *JUnitParams* as testing frameworks.
 
 **Requirements Specification**
 
@@ -36,3 +36,7 @@ We have recently signed a supplier of conjured items. This requires an update to
 Feel free to make any changes to the UpdateQuality method and add any new code as long as everything still works correctly. However, do not alter the Item class or Items property as those belong to the goblin in the corner who will insta-rage and one-shot you as he doesn't believe in shared code ownership (you can make the UpdateQuality method and Items property static if you like, we'll cover for you).
 
 Just for clarification, an item can never have its Quality increase above 50, however "Sulfuras" is a legendary item and as such its Quality is 80 and it never alters.
+
+Additional new requirement:
+
+	- Add an item "Craftspeople Potion", a legendary item, whose quality increases by 1 every day
