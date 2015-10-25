@@ -38,7 +38,7 @@ public class GildedRoseTest {
         GildedRose app = new GildedRose(items);
         
         // act
-        app.updateQuality();
+        app.handleItems();
         
         // check
         Item item = app.items[0];
@@ -129,7 +129,7 @@ public class GildedRoseTest {
         GildedRose app = new GildedRose(items);
         
         // act
-        app.updateQuality();
+        app.handleItems();
         
         // check
         Item item = app.items[0];

@@ -7,40 +7,43 @@ class GildedRose {
 		this.items = items;
 	}
 
-	public void updateQuality() {
+	public void handleItems() {
 		for (int i = 0; i < items.length; i++) {
 			Item item = items[i];
-			
-			if (isLegendary(item)) {
-				continue;
-			}
-			
-			if (item.name.equals("Craftspeople Potion")) {
-				increaseQuality(item);
-				continue;
-			}
-			
-			if (isCheese(item)) {
-				handleCheese(item);
-				continue;
-			} 
-			
-			if (isTicket(item)) {
-				handleTicket(item);
-				continue;
-			}
-			
-			if(isConjured(item)) {
-				handleConjured(item);
-				continue;
-			}
+			handleItem(item);
+		}
+	}
 
+	private void handleItem(Item item) {
+		if (isLegendary(item)) {
+			return;
+		}
+		
+		if (item.name.equals("Craftspeople Potion")) {
+			increaseQuality(item);
+			return;
+		}
+		
+		if (isCheese(item)) {
+			handleCheese(item);
+			return;
+		} 
+		
+		if (isTicket(item)) {
+			handleTicket(item);
+			return;
+		}
+		
+		if(isConjured(item)) {
+			handleConjured(item);
+			return;
+		}
+
+		decreaseQuality(item);
+		decreaseSellIn(item);
+
+		if (item.sellIn < 0) {
 			decreaseQuality(item);
-			decreaseSellIn(item);
-
-			if (item.sellIn < 0) {
-				decreaseQuality(item);
-			}
 		}
 	}
 	
