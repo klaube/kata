@@ -1,5 +1,6 @@
 import static org.junit.Assert.*;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -8,6 +9,13 @@ import junitparams.Parameters;
 
 @RunWith(JUnitParamsRunner.class)
 public class GildedRoseTest {
+	
+	private GildedRose underTest;
+
+	@Before
+	public void setUp() {
+        underTest = new GildedRose();
+	}
 
     @Test
     @Parameters({
@@ -34,14 +42,12 @@ public class GildedRoseTest {
     }
 
 	private void runTestSellIn(String name, int sellIn, int newSellin) {
-		Item[] items = new Item[] { new Item(name, sellIn, 20) };
-        GildedRose app = new GildedRose(items);
+		Item item = new Item(name, sellIn, 20);
         
         // act
-        app.handleItems();
+        underTest.handleItem(item);
         
         // check
-        Item item = app.items[0];
 		assertEquals(newSellin, item.sellIn);
 	}
 
@@ -125,14 +131,12 @@ public class GildedRoseTest {
     }
 
 	private void runTestQuality(String name, int sellIn, int quality, int newQuality) {
-		Item[] items = new Item[] { new Item(name, sellIn, quality) };
-        GildedRose app = new GildedRose(items);
+		Item item = new Item(name, sellIn, quality);
         
         // act
-        app.handleItems();
+        underTest.handleItem(item);
         
         // check
-        Item item = app.items[0];
 		assertEquals(newQuality, item.quality);
 	}
 

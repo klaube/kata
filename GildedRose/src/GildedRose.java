@@ -1,20 +1,18 @@
 
 
 class GildedRose {
-	Item[] items;
 
-	public GildedRose(Item[] items) {
-		this.items = items;
+	public GildedRose() {
 	}
 
-	public void handleItems() {
+	public void handleItems(Item[] items) {
 		for (int i = 0; i < items.length; i++) {
 			Item item = items[i];
 			handleItem(item);
 		}
 	}
 
-	private void handleItem(Item item) {
+	void handleItem(Item item) {
 		if (isLegendary(item)) {
 			return;
 		}
