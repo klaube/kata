@@ -9,8 +9,8 @@ public class Game {
 	}
 
 	public void setSymbol(String symbol, int x, int y) {
-		
-		throw new IllegalArgumentException();
+		if (board[x][y] != null) throw new IllegalArgumentException();
+		board[x][y] = symbol;
 	}
 
 }

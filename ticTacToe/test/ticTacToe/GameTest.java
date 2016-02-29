@@ -17,7 +17,14 @@ public class GameTest {
 		Game game = new Game();
 		game.setSymbol("X", 0, 0);
 		game.setSymbol("O", 0, 0);
-		
+	}
+	
+	@Test
+	public void a_new_game_should_not_be_over2() throws Exception {
+		Game game = new Game();
+		game.setSymbol("X", 0, 0);
+		game.setSymbol("O", 0, 1);
+		assertFalse(game.isOver());
 	}
 
 }
