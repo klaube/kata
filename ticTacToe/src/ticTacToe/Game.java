@@ -1,14 +1,15 @@
 package ticTacToe;
 
 public class Game {
+	
+	private String[][] board = new String[3][3]; 
 
 	public boolean isOver() {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
-	public void setSymbol(String string, int i, int j) {
-		// TODO Auto-generated method stub
+	public void setSymbol(String symbol, int x, int y) {
+		
 		throw new IllegalArgumentException();
 	}
 
