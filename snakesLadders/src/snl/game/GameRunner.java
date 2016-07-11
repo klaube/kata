@@ -14,7 +14,7 @@ import com.google.common.io.Files;
  */
 public class GameRunner {
 	
-	private static final String DIRECTORY = "D:\\Development\\GitHub\\kata\\snakesLadders\\res\\";
+	private static final String DIRECTORY = "C:\\repos\\kataKL\\snakesLadders\\res\\";
 	private static final String FILE_NAME = "gameSetUp.txt";
 	private static final String PATH = DIRECTORY + FILE_NAME;
 
